@@ -3,3 +3,11 @@ form {
   justify-items: center;
   margin: 10em 0;
 }
+
+header {
+  z-index: 1300;
+  background-color: palegreen;
+}
+ header li {
+   margin: 0 7px;
+ }

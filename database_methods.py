@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 def get_active_messages():
     """get all active messages in the database"""
+
     current_time = datetime.utcnow()
     twenty_four_hours_ago = current_time - timedelta(hours=24)
 
@@ -14,6 +15,7 @@ def get_active_messages():
 
 def create_geoJson():
     """create geojson object"""
+    
     features = []
     messages = get_active_messages()
     
