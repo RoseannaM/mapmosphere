@@ -8,9 +8,7 @@ function App() {
   return (
     <div id="main">
     <Navbar/>
-    <MessageForm/>
-
-    <Map/>
+    {/* <Map/> */}
     </div>
     
   );
