@@ -14,13 +14,13 @@ simple_geoip = SimpleGeoIP(app)
 
 @app.route("/")
 def hello():
-    print(create_geoJson())
     return render_template('index.html')
 
 @app.route("/spirit/api/v1.0/geojson")
 def geojson():
     """serve geojson data object"""
-    pass
+    return jsonify(create_geoJson())
+
 
 # https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
 @app.route("/spirit/api/v1.0/messages", methods=["GET"])

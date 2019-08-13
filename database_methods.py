@@ -14,13 +14,23 @@ def get_active_messages():
 
 def create_geoJson():
     """create geojson object"""
+    features = []
     messages = get_active_messages()
+    
     for message in messages:
-         print(message.message_id)
-
+        feature = {"type": "Feature", 
+          "properties": {
+              "id": message.message_id,
+              "text": message.message_text
+          },
+             "geometry": {
+              "type": "Point",
+              "coordinates": [message.lat, message.lng]
+          }
+        }
+        features.append(feature)
+        
     geoJson = {"type": "FeatureCollection",
-               "features": []
+               "features": features
     }
-
     return geoJson
-
