@@ -3,8 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_simple_geoip import SimpleGeoIP
 from flask_cors import CORS
 from database_methods import create_geoJson
-from model import Message
-from model import connect_to_db, db
+from model import connect_to_db, db, Message
 from datetime import datetime, timedelta
 
 app = Flask(__name__, static_folder="build/static", template_folder="build")
@@ -13,6 +12,10 @@ app.config['SECRET_KEY'] = "ABC"
 app.config["GEOIPIFY_API_KEY"] = "at_fq3Zklt83usgp4FESotLUAgZPwhFv"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 simple_geoip = SimpleGeoIP(app)
+
+
+prod = 'postgresql:///mapmosphere'
+test = 'postgresql:///testdb'
 
 @app.route("/")
 def home():
@@ -39,8 +42,9 @@ def get_message(message_id):
 def post_message():
     """post a message to the database"""
     geoip_data = simple_geoip.get_geoip_data()
-    # lat = -39.03385
-    # lng = 125.75432
+    # lat = -171.5129
+    # lng = 43.1016
+
     lat = geoip_data.get('location').get('lat')
     lng = geoip_data.get('location').get('lng')
     
@@ -61,7 +65,8 @@ if __name__ == "__main__":
     app.jinja_env.auto_reload = app.debug
     
     #connect to main database
-    connect_to_db(app)
+    connect_to_db(app, test)
+  
     print("Connected to DB.")
     DebugToolbarExtension(app)
     app.run(host='0.0.0.0')

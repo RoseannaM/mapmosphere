@@ -1,8 +1,8 @@
 import unittest
 import json
 from serve import app
-from model import Message
-from model import connect_to_db, example_message_data, db
+from testData import create_test_data
+from model import connect_to_db, db, Message
 
 class MapmosphereApiTests(unittest.TestCase):
     """Tests for the mapmosphere site."""
@@ -35,18 +35,27 @@ class MapmosphereTestsDatabase(unittest.TestCase):
         
         # Connect to test database (uncomment when testing database)
         connect_to_db(app, db_uri='postgresql:///testdb')
+        db.create_all()
+        create_test_data()
+    
+    def test_message_count(self):
+        response = self.client.get("/spirit/api/v1.0/geojson.json")
+        json_data = json.loads(response.data)
+        messageCount = len(json_data['features'])
+        self.assertTrue(messageCount == 6)
 
-        # Create tables and add sample data (uncomment when testing database)
-
-        #db.create_all()
-        #example_message_data()
+    def test_feature_type(self):
+        response = self.client.get("/spirit/api/v1.0/geojson.json")
+        json_data = json.loads(response.data)
+        message = json_data
+        featureType = message['features'][0]['geometry']['type']
+        self.assertTrue(featureType == 'Point')
 
     def tearDown(self):
         """Do at end of every test."""
 
         db.session.close()
         db.drop_all()
-
 
 
 if __name__ == "__main__":

@@ -6,7 +6,8 @@ from datetime import datetime as dt
 
 db = SQLAlchemy()
 
-
+prod = 'postgresql:///mapmosphere'
+test = 'postgresql:///testdb'
 ##############################################################################
 # Model definitions
 
@@ -56,10 +57,9 @@ class LikedMessages(db.Model):
 
 ##############################################################################
 # Helper functions
-
-def connect_to_db(app, db_uri='postgresql:///mapmosphere'):
+#'postgresql:///mapmosphere'
+def connect_to_db(app, db_uri):
     """Connect the database to our Flask app."""
-
     # Configure to use our PstgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -68,16 +68,6 @@ def connect_to_db(app, db_uri='postgresql:///mapmosphere'):
     db.init_app(app)
 
 
-# test data 
-def example_message_data():
-    """Create example data for the test database."""
-    current_time = dt.now()
-    message1 = Message(message_text="this is a test message", created_at=current_time, lat=115.7381037, lng=-32.0475)
-    message2 = Message(message_text="this is a second test message", created_at=current_time, lat=-151.5129, lng=-63.1016)
-    db.session.add(message1)
-    db.session.add(message2)
-    db.session.commit()
-
 if __name__ == "__main__":
     from serve import app
-    connect_to_db(app)
+    connect_to_db(app, test)
