@@ -6,7 +6,6 @@ export default class MessageForm extends Component {
     }
   
     handleSubmit(e) {
-      alert('The value is: ' + this.input.value);
       e.preventDefault();
       //use fetch to post input data to my beautiful app
       //fetch post json

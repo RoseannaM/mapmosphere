@@ -1,22 +1,24 @@
 from flask import Flask, render_template, request, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_simple_geoip import SimpleGeoIP
+from flask_cors import CORS
 from database_methods import create_geoJson
 from model import Message
 from model import connect_to_db, db
 from datetime import datetime, timedelta
 
 app = Flask(__name__, static_folder="build/static", template_folder="build")
+CORS(app)
 app.config['SECRET_KEY'] = "ABC"
 app.config["GEOIPIFY_API_KEY"] = "at_fq3Zklt83usgp4FESotLUAgZPwhFv"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 simple_geoip = SimpleGeoIP(app)
 
 @app.route("/")
-def hello():
+def home():
     return render_template('index.html')
 
-@app.route("/spirit/api/v1.0/geojson")
+@app.route("/spirit/api/v1.0/geojson.json")
 def geojson():
     """serve geojson data object"""
     return jsonify(create_geoJson())
@@ -37,6 +39,8 @@ def get_message(message_id):
 def post_message():
     """post a message to the database"""
     geoip_data = simple_geoip.get_geoip_data()
+    # lat = -39.03385
+    # lng = 125.75432
     lat = geoip_data.get('location').get('lat')
     lng = geoip_data.get('location').get('lng')
     

@@ -13,7 +13,9 @@ export default class Modal extends Component {
       <div className={showHideClassName}>
         <section className="modal-main">
           {children}
-          <button onClick={handleClose}>close</button>
+          <button onClick={handleClose}>
+          <i className="fa fa-times" aria-hidden="true"></i>
+          </button>
         </section>
       </div>
     );
