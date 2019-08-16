@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class Modal extends Component {
   constructor(props) {
     super(props);
-    this.test = this.props;
+    this.props = this.props;
   }
 
   render() {
@@ -14,7 +14,7 @@ export default class Modal extends Component {
         <section className="modal-main">
           {children}
           <button onClick={handleClose}>
-          <i className="fa fa-times" aria-hidden="true"></i>
+            <i className="fa fa-times" aria-hidden="true"></i>
           </button>
         </section>
       </div>
