@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import abort, Flask, render_template, request, jsonify, flash, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_simple_geoip import SimpleGeoIP
 from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from database_methods import create_geoJson
-from model import connect_to_db, db, Message
+from model import connect_to_db, db, Message, User
 from datetime import datetime, timedelta
 
 app = Flask(__name__, static_folder="build/static", template_folder="build")
@@ -33,7 +35,7 @@ def get_messages():
     """returns all messages"""
     return "return all messages from database"
 
-@app.route("/spirit/api/v1.0/message /<int:message_id>", methods=["GET"])
+@app.route("/spirit/api/v1.0/message/<int:message_id>", methods=["GET"])
 def get_message(message_id):
     """returns a message by id"""
     return "return single message from database by id"
@@ -42,9 +44,6 @@ def get_message(message_id):
 def post_message():
     """post a message to the database"""
     geoip_data = simple_geoip.get_geoip_data()
-    # lat = -171.5129
-    # lng = 43.1016
-
     lat = geoip_data.get('location').get('lat')
     lng = geoip_data.get('location').get('lng')
     
@@ -57,6 +56,27 @@ def post_message():
     db.session.add(message)
     db.session.add(testMessage)
     db.session.commit()
+    return data
+
+@app.route("/spirit/api/v1.0/register", methods=["POST"])
+def register_user():
+    """adds a new user"""
+    data = request.get_json()
+   
+    if request.method == "POST":
+        email = data["email"]
+        password = data["password"]
+        pass_hash = generate_password_hash(password)
+        user = User.query.filter_by(email=email).first()
+    
+        if user is None:
+            user = User(email=email, password=pass_hash)
+            db.session.add(user)
+            db.session.commit()
+        else:
+            return jsonify({"error": "Invalid email"}), 400
+
+
     return data
 
 

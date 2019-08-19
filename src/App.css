@@ -12,13 +12,17 @@ form textarea {
 
 header {
   z-index: 1300;
-  background-color: palegreen;
+  background-color: #e7caec;
 }
  header li {
    margin: 0 7px;
  }
-
+ .register {
+  z-index: 1300;
+  position: relative;
+ }
  .modal {
+  display: block;
   position: fixed;
   top: 0;
   left: 0;
@@ -28,6 +32,7 @@ header {
 }
 
 .modal-main {
+  display: block;
   position:fixed;
   border-radius: 10px;
   background: white;
@@ -45,10 +50,11 @@ header {
   border: solid 3px #d998fb;
   margin: 0 20px 20px;
 }
-.display-block {
+
+/* .display-block {
   display: block;
 }
 
 .display-none {
   display: none;
-}
+} */

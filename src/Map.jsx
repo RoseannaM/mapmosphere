@@ -24,43 +24,18 @@ const mapStyle = {
   flex: 1
 };
 
-// const allStyles = {
-//   clusterMarker: {
-//     width: 30,
-//     height: 30,
-//     borderRadius: '50%',
-//     backgroundColor: '#51D5A0',
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     color: 'white',
-//     border: '2px solid #56C498',
-//     cursor: 'pointer'
-//   },
-//   marker: {
-//     width: 30,
-//     height: 30,
-//     borderRadius: '50%',
-//     backgroundColor: '#E0E0E0',
-//     display: 'flex',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     border: '2px solid #C9C9C9'
-//   }
-// };
-
+const paint = {
+    'circle-blur' : 0.5,
+    'circle-color': '#eccaec',
+    'circle-radius': 9,
+    'circle-stroke-width': 5,
+    'circle-stroke-color': '#eccaec',
+    'circle-stroke-opacity': 0.5,
+  };
 const Map = ReactMapboxGl({
   accessToken:
     'pk.eyJ1Ijoicm9zZWFubmFtIiwiYSI6ImNqeWdrd2R2cTAyNHMzbW8wZmNqd2NnNjgifQ.NhBR5dNoezc0iAqQ-10pIA'
 });
-
-// const layoutLayer = {
-//   'text-color': 'black',
-//   'text-field': '{point_count_abbreviated}',
-//   'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-//   'text-size': 12
-// };
-const circleLayout = { visibility: 'visible' };
 
 export default class MapCompTest extends Component {
   constructor(props) {
@@ -73,7 +48,6 @@ export default class MapCompTest extends Component {
       clickedFeature: undefined
     };
   }
-
   createCoord = markerGeoJson => {
     const coord = this.markerGeoJson.features.find(
       feature => feature.properties.id === this.clickedFeature
@@ -91,16 +65,15 @@ export default class MapCompTest extends Component {
     this.setState({ zoom: [10] });
   }
 
-  getFeature = (geojson, clickedFeature) =>{
-    return geojson.features.find (
+  getFeature = (geojson, clickedFeature) => {
+    return geojson.features.find(
       feature => feature.properties.id === clickedFeature
-    )
-  }
+    );
+  };
+
   zoom = [4];
 
   center = [-77.01239, 38.91275];
-
-
 
   markerClick = feature => {
     this.setState({
@@ -114,15 +87,12 @@ export default class MapCompTest extends Component {
     return onStyleLoad && onStyleLoad(map);
   };
 
-  onControlClick = (map, zoomDiff) => {
-    console.log('e');
-  };
-
   render() {
     const { popup, geojson, clickedFeature } = this.state;
     return (
       <div>
         <Map
+          onClick={() => this.setState({ clickedFeature: undefined })}
           onMove={this.onMove}
           zoom={this.state.zoom}
           style={'mapbox://styles/mapbox/streets-v9'}
@@ -138,6 +108,7 @@ export default class MapCompTest extends Component {
             layerOptions={{
               filter: ['has', 'point_count']
             }}
+            paint={paint}
             // paint={{
             //   'circle-color': {
             //     property: 'point_count',
@@ -161,9 +132,10 @@ export default class MapCompTest extends Component {
           </Layer>
           {clickedFeature && (
             <MessagePopup
-            // getClickedFeature={this.getFeature(geojson)}
               text={this.getFeature(geojson, clickedFeature).properties.text}
-              coordinates={this.getFeature(geojson, clickedFeature).geometry.coordinates}
+              coordinates={
+                this.getFeature(geojson, clickedFeature).geometry.coordinates
+              }
             />
           )}
         </Map>

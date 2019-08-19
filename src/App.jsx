@@ -8,10 +8,9 @@ function App() {
   return (
     <div id="main">
     <Navbar/>
-    <Map/>
+    {/* <Map/> */}
     </div>
     
   );
 }
-
 export default App;

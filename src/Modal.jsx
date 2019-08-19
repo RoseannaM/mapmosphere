@@ -1,23 +1,28 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class Modal extends Component {
+class Modal extends Component {
   constructor(props) {
     super(props);
     this.props = this.props;
   }
 
+  handleClose = e => {
+    this.props.history.push('/')
+  };
+
   render() {
-    const showHideClassName = this.props.showMessageForm ? 'modal display-block' : 'modal display-none';  
-    const { handleClose, children} = this.props;
+    const { children} = this.props;
     return (
-      <div className={showHideClassName}>
+      <div>
         <section className="modal-main">
           {children}
-          <button onClick={handleClose}>
-            <i className="fa fa-times" aria-hidden="true"></i>
+          <button onClick={this.handleClose}>
+            <i id={this.props.id} className="fa fa-times" aria-hidden="true"></i>
           </button>
         </section>
       </div>
     );
   }
 }
+export default withRouter(Modal);
