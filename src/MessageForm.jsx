@@ -40,7 +40,7 @@ class MessageFormView extends Component {
       <Modal id="message-modal">
         <div className={'message'}>
           <form onSubmit={this.handleSubmit}>
-            <label>Message:</label>
+            <h3>Write Message:</h3>
             <textarea
               name="message"
               rows="5"

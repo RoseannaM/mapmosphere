@@ -1,4 +1,4 @@
-from flask import abort, Flask, render_template, request, jsonify, flash, redirect
+from flask import abort, Flask, render_template, request, jsonify, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_simple_geoip import SimpleGeoIP
 from flask_cors import CORS
@@ -75,9 +75,33 @@ def register_user():
             db.session.commit()
         else:
             return jsonify({"error": "Invalid email"}), 400
+    return data
 
+@app.route("/spirit/api/v1.0/login", methods=["POST"])
+def login_user():
+    """logs in a user"""
+
+    data = request.get_json()
+
+    if request.method == "POST":
+        email = data['email']
+        password = data['password']
+        user = User.query.filter_by(email=email).first()
+        pass_hash = check_password_hash(user.password,password)
+        
+        if pass_hash:
+            session["id"] = user.user_id
+            return jsonify({"success": "logged in"}), 200
+        else:
+            return jsonify({"error": "Invalid login"}), 400
 
     return data
+
+@app.route("/spirit/api/v1.0/logout", methods=["POST"])
+def logout_user():
+    """remove user from session"""
+    session.pop("id", None)
+    return jsonify({"success": "logged out"}), 200
 
 
 if __name__ == "__main__":

@@ -33,8 +33,7 @@ class RegistrationFormView extends Component {
         console.log('Success:', JSON.stringify(response));
       })
       .catch(error => {
-        console.error('Error:', error)
-        alert(error)
+        alert("Error:",error)
       });
   };
 
@@ -49,7 +48,7 @@ class RegistrationFormView extends Component {
 
   render() {
     return (
-      <Modal id="register-modal">
+      <Modal formName={"Register"} id="register-modal">
         <div className={'register'}>
           <form onSubmit={this.handleSubmit}>
             <label>Email</label>

@@ -14,8 +14,9 @@ class Modal extends Component {
   render() {
     const { children} = this.props;
     return (
-      <div>
-        <section className="modal-main">
+      <div className="modal">
+        <section className="modal modal-main">
+          <h3>{this.props.formName}</h3>
           {children}
           <button onClick={this.handleClose}>
             <i id={this.props.id} className="fa fa-times" aria-hidden="true"></i>

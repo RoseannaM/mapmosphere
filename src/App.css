@@ -42,7 +42,10 @@ header {
   left:50%;
   transform: translate(-50%,-50%);
 }
-
+.modal h3 {
+  text-align: center;
+  margin: 0.5em 0;
+}
 .modal button {
   border-radius: 100px;
   width: 2em;
@@ -50,11 +53,3 @@ header {
   border: solid 3px #d998fb;
   margin: 0 20px 20px;
 }
-
-/* .display-block {
-  display: block;
-}
-
-.display-none {
-  display: none;
-} */
