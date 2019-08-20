@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import 'styled-components/macro';
 import styled from 'styled-components';
 import MessagePopup from './MessagePopup';
+import {
+  withRouter,
+  Redirect,
+  Route,
+  Link,
+  BrowserRouter as Router
+} from 'react-router-dom';
 import ReactMapboxGl, {
   GeoJSONLayer,
   ZoomControl,
@@ -11,6 +18,7 @@ import ReactMapboxGl, {
   Cluster,
   Popup
 } from 'react-mapbox-gl';
+import Modal from './Modal';
 import MapboxGL from 'mapbox-gl';
 
 const geojsonUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/geojson.json';
@@ -25,19 +33,19 @@ const mapStyle = {
 };
 
 const paint = {
-    'circle-blur' : 0.5,
-    'circle-color': '#eccaec',
-    'circle-radius': 9,
-    'circle-stroke-width': 5,
-    'circle-stroke-color': '#eccaec',
-    'circle-stroke-opacity': 0.5,
-  };
+  'circle-blur': 0.5,
+  'circle-color': '#eccaec',
+  'circle-radius': 9,
+  'circle-stroke-width': 5,
+  'circle-stroke-color': '#eccaec',
+  'circle-stroke-opacity': 0.5
+};
 const Map = ReactMapboxGl({
   accessToken:
     'pk.eyJ1Ijoicm9zZWFubmFtIiwiYSI6ImNqeWdrd2R2cTAyNHMzbW8wZmNqd2NnNjgifQ.NhBR5dNoezc0iAqQ-10pIA'
 });
 
-export default class MapCompTest extends Component {
+class MapCompTest extends Component {
   constructor(props) {
     super(props);
 
@@ -79,6 +87,7 @@ export default class MapCompTest extends Component {
     this.setState({
       clickedFeature: feature.properties.id
     });
+    this.props.history.push('/view-message/' + feature.properties.id);
   };
 
   onStyleLoad = map => {
@@ -108,18 +117,6 @@ export default class MapCompTest extends Component {
               filter: ['has', 'point_count']
             }}
             paint={paint}
-            // paint={{
-            //   'circle-color': {
-            //     property: 'point_count',
-            //     type: 'interval',
-            //     stops: [[0, '#51bbd6'], [100, '#f1f075'], [750, '#f28cb1']]
-            //   },
-            //   'circle-radius': {
-            //     property: 'point_count',
-            //     type: 'interval',
-            //     stops: [[0, 20], [100, 30], [750, 40]]
-            //   }
-            // }}
           >
             {geojson.features.map((feature, i) => (
               <Feature
@@ -129,16 +126,23 @@ export default class MapCompTest extends Component {
               />
             ))}
           </Layer>
-          {clickedFeature && (
-            <MessagePopup
-              text={this.getFeature(geojson, clickedFeature).properties.text}
-              coordinates={
-                this.getFeature(geojson, clickedFeature).geometry.coordinates
-              }
-            />
-          )}
         </Map>
+        {geojson.features.length > 0 && (
+          <Route
+            path="/view-message/:id"
+            render={params => {
+              const id = parseInt(params.match.params.id);
+              console.log(clickedFeature);
+              return (
+                <MessagePopup
+                  text={this.getFeature(geojson, id).properties.text}
+                />
+              );
+            }}
+          />
+        )}
       </div>
     );
   }
 }
+export default withRouter(MapCompTest);

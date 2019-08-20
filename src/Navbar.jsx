@@ -11,6 +11,7 @@ import UserProfile from './UserProfile';
 import RegistrationForm from './RegistrationForm';
 import MessageForm from './MessageForm';
 import LoginForm from './LoginForm';
+import MessagePopup from './MessagePopup';
 
 export default class Navbar extends Component {
   constructor(props){
@@ -45,7 +46,6 @@ export default class Navbar extends Component {
   render() {
     const {onLogin, onLogout, error} = this.props;
     const loggedOut = window.loggedOut;
-    console.log(loggedOut)
     return (
       <div>
         <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
