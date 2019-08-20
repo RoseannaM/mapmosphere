@@ -9,7 +9,7 @@ from model import connect_to_db, db, Message, User
 from datetime import datetime, timedelta
 
 app = Flask(__name__, static_folder="build/static", template_folder="build")
-CORS(app)
+CORS(app,supports_credentials=True)
 app.config['SECRET_KEY'] = "ABC"
 app.config["GEOIPIFY_API_KEY"] = "at_fq3Zklt83usgp4FESotLUAgZPwhFv"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -39,6 +39,13 @@ def get_messages():
 def get_message(message_id):
     """returns a message by id"""
     return "return single message from database by id"
+
+@app.route("/spirit/api/v1.0/me", methods=["GET"])
+def get_user():
+    """checks if user is logged in"""
+    if session.get("id") == True:
+        return jsonify({"loggedOut": False}), 200
+    return jsonify({"loggedOut": True}), 200
 
 @app.route("/spirit/api/v1.0/message", methods=["POST"])
 def post_message():
@@ -74,7 +81,7 @@ def register_user():
             db.session.add(user)
             db.session.commit()
         else:
-            return jsonify({"error": "Invalid email"}), 400
+            return jsonify({"error": "User aleady exists"}), 400
     return data
 
 @app.route("/spirit/api/v1.0/login", methods=["POST"])
@@ -87,19 +94,24 @@ def login_user():
         email = data['email']
         password = data['password']
         user = User.query.filter_by(email=email).first()
-        pass_hash = check_password_hash(user.password,password)
-        
-        if pass_hash:
-            session["id"] = user.user_id
-            return jsonify({"success": "logged in"}), 200
+
+        if user is None:
+            return jsonify({"error": "User does not exist"}), 400
         else:
-            return jsonify({"error": "Invalid login"}), 400
+            pass_hash = check_password_hash(user.password, password)
+            if pass_hash:
+                session["id"] = user.user_id
+                session['logged_in'] = True
+                return jsonify({"success": "logged in"}), 200
+            else:
+                return jsonify({"error": "Wrong password"}), 400
 
     return data
 
 @app.route("/spirit/api/v1.0/logout", methods=["POST"])
 def logout_user():
     """remove user from session"""
+    session.pop('logged_in', None)
     session.pop("id", None)
     return jsonify({"success": "logged out"}), 200
 
@@ -113,4 +125,4 @@ if __name__ == "__main__":
   
     print("Connected to DB.")
     DebugToolbarExtension(app)
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port='5000')

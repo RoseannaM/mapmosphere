@@ -12,57 +12,65 @@ class RegistrationFormView extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: false,
+      errorMessage: undefined
     };
   }
 
   handleSubmit = e => {
+    const args = { email: this.state.email, password: this.state.password };
     e.preventDefault();
     const registerUserUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/register';
-  
+
     fetch(registerUserUrl, {
       method: 'POST',
-      body: JSON.stringify(this.state),
+      body: JSON.stringify(args),
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-      .then(res => res.json())
-      .then(response => {
-        this.props.history.push('/');
-        console.log('Success:', JSON.stringify(response));
+    }).then(res => res.json())
+      .then(res => {
+        if (res.ok) {
+          this.props.history.push('/');
+          console.log('Success');
+        } else {
+          this.setState({error: true, errorMessage : res.error })
+          console.log(res.error);
+        }
       })
       .catch(error => {
-        alert("Error:",error)
+        alert('Error:', error);
       });
   };
 
   handleChange = e => {
-    if(e.target.name === "email"){
+    if (e.target.name === 'email') {
       this.setState({ email: e.target.value });
     }
-    if(e.target.name === "password"){
+    if (e.target.name === 'password') {
       this.setState({ password: e.target.value });
     }
   };
 
   render() {
+    const {email, password, errorMessage} = this.state;
     return (
-      <Modal formName={"Register"} id="register-modal">
+      <Modal error={errorMessage} formName={'Register'} id="register-modal">
         <div className={'register'}>
           <form onSubmit={this.handleSubmit}>
             <label>Email</label>
             <input
               name="email"
               type="email"
-              value={this.props.email}
+              value={email}
               onChange={this.handleChange}
             />
             <label>Password</label>
             <input
               name="password"
               type="password"
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
             />
             <input type="submit" value="Submit" />

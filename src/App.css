@@ -53,3 +53,7 @@ header {
   border: solid 3px #d998fb;
   margin: 0 20px 20px;
 }
+
+.login-btns {
+  display: contents;
+}

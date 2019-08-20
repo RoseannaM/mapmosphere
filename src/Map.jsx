@@ -79,7 +79,6 @@ export default class MapCompTest extends Component {
     this.setState({
       clickedFeature: feature.properties.id
     });
-    console.log(feature);
   };
 
   onStyleLoad = map => {

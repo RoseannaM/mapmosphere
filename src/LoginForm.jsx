@@ -12,7 +12,9 @@ class LoginFormView extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: false,
+      errorMessage : undefined
     };
   }
 
@@ -21,16 +23,24 @@ class LoginFormView extends Component {
     const registerUserUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/login';
   
     fetch(registerUserUrl, {
+      credentials : 'include',
       method: 'POST',
       body: JSON.stringify(this.state),
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-      .then(res => res.json())
-      .then(response => {
-        alert(JSON.stringify(response));
-        this.props.history.push('/');
+    })//nested promise to get both res and json
+      .then(res => {
+        return res.json()
+          .then(json => {
+            if (res.ok) {
+              this.props.onLogin()
+              this.props.history.push('/');
+            } 
+            else {
+              this.setState({error: true, errorMessage : json.error })
+            }
+          })
       })
       .catch(error => {
         console.error('Error:', error)
@@ -48,22 +58,23 @@ class LoginFormView extends Component {
   };
 
   render() {
+    const {email, password, errorMessage} = this.state;
     return (
-      <Modal formName={"Login"} id="login-modal">
+      <Modal error={errorMessage} formName={"Login"} id="login-modal">
         <div className={'login'}>
           <form onSubmit={this.handleSubmit}>
             <label>Email</label>
             <input
               name="email"
               type="email"
-              value={this.props.email}
+              value={email}
               onChange={this.handleChange}
             />
             <label>Password</label>
             <input
               name="password"
               type="password"
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
             />
             <input type="submit" value="Submit" />

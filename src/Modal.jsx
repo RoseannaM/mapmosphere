@@ -16,6 +16,7 @@ class Modal extends Component {
     return (
       <div className="modal">
         <section className="modal modal-main">
+          <p>{this.props.error}</p>
           <h3>{this.props.formName}</h3>
           {children}
           <button onClick={this.handleClose}>
