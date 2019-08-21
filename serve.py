@@ -43,11 +43,11 @@ def get_message(message_id):
 @app.route("/spirit/api/v1.0/me", methods=["GET"])
 def get_user():
     """checks if user is logged in"""
-
-    if session.get("logged_in") == True:
-        return jsonify({"loggedOut": False,
-                "user_id" : session.get("id")}), 200
-    return jsonify({"loggedOut": True}), 200
+    return jsonify(dict(session))
+    # if session.get("logged_in") == True:
+    #     return jsonify({"loggedOut": False,
+    #             "user_id" : session.get("id")}), 200
+    # return jsonify({"loggedOut": True}), 200
 
 @app.route("/spirit/api/v1.0/message", methods=["POST"])
 def post_message():
