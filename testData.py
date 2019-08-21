@@ -1,6 +1,8 @@
-from model import Message, connect_to_db, db
+from model import Message, User, LikedMessage, connect_to_db, db
 from serve import app
 from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 test = 'postgresql:///testdb'
 
@@ -10,7 +12,7 @@ def create_test_data():
     current_time = datetime.utcnow()
     testTime = current_time
 
-    testData = {
+    testGeojsonData = {
         "message0 ": {
             "time" : testTime - timedelta(hours=5),
             "message-text" : "This is a cool app",
@@ -49,13 +51,45 @@ def create_test_data():
         }
     }
 
-    
-    for key in testData:
-        message = Message(message_text=testData[key]["message-text"], created_at=testData[key]["time"], lat=testData[key]["lat"], lng=testData[key]["lng"])
-        db.session.add(message)
+    testUserData = {
+        "user1" : {
+            "email" : "test@test",
+            "password" : "test"
+        },
+         "user2" : {
+            "email" : "test@test1",
+            "password" : "test1"
+        }
+    }
+    def addUsers():
+        """add test user data to test db"""
+        
+        for user in testUserData:
+            pass_hash = generate_password_hash(testUserData[user]["password"])
+            testUser = User(email=testUserData[user]["email"], password=pass_hash)
+            db.session.add(testUser)
+        db.session.commit()
 
-    db.session.commit()
+    def addMessages():
+        """add test message data to test db"""
+
+        for key in testGeojsonData:
+            message = Message(message_text=testGeojsonData[key]["message-text"], created_at=testGeojsonData[key]["time"], lat=testGeojsonData[key]["lat"], lng=testGeojsonData[key]["lng"])
+            db.session.add(message)
+
+        db.session.commit()
+
+    def addLikedMessage():
+        """add a message to liked list"""
+
+        for num in range(1,4):
+            likeMessage = LikedMessage(message_id=num,user_id=2)
+            db.session.add(likeMessage)
+        db.session.commit()
     
+    addUsers()
+    addMessages()
+    addLikedMessage()
 
 if __name__ == "__main__":
     connect_to_db(app, test)

@@ -37,10 +37,10 @@ class Message(db.Model):
     lng = db.Column(db.Float)
 
     def __repr__(self):
-        """Provide helpful representation when printed."""
+        """Provide helpful representation of message instance when printed."""
         return f"<Message message_text={self.message_text} message_id={self.message_id} created_at={self.created_at} lat={self.lat} lng={self.lng} >"
 
-class LikedMessages(db.Model):
+class LikedMessage(db.Model):
     """A liked message"""
     
     __tablename__ = "liked_messages"
