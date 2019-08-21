@@ -90,17 +90,21 @@ class MapCompTest extends Component {
     this.props.history.push('/view-message/' + feature.properties.id);
   };
 
+  handleMapClick = e => {
+    this.setState({ clickedFeature: undefined });
+  };
+  
   onStyleLoad = map => {
     const { onStyleLoad } = this.props;
     return onStyleLoad && onStyleLoad(map);
   };
-
+  
   render() {
     const { popup, geojson, clickedFeature } = this.state;
     return (
       <div>
         <Map
-          onClick={() => this.setState({ clickedFeature: undefined })}
+          onClick={this.handleMapClick}
           onMove={this.onMove}
           zoom={this.state.zoom}
           style={'mapbox://styles/mapbox/streets-v9'}
@@ -132,7 +136,6 @@ class MapCompTest extends Component {
             path="/view-message/:id"
             render={params => {
               const id = parseInt(params.match.params.id);
-              console.log(clickedFeature);
               return (
                 <MessagePopup
                   text={this.getFeature(geojson, id).properties.text}

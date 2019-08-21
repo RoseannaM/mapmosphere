@@ -29,7 +29,7 @@ class LoginFormView extends Component {
       headers: {
         'Content-Type': 'application/json'
       }
-    })//nested promise to get both res and json
+    })
       .then(res => {
         return res.json()
           .then(json => {

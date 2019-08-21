@@ -24,20 +24,23 @@ class RegistrationFormView extends Component {
     const registerUserUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/register';
 
     fetch(registerUserUrl, {
+      credentials : 'include',
       method: 'POST',
       body: JSON.stringify(args),
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(res => res.json())
-      .then(res => {
-        if (res.ok) {
-          this.props.history.push('/');
-          console.log('Success');
-        } else {
-          this.setState({error: true, errorMessage : res.error })
-          console.log(res.error);
-        }
+    }).then(res => {
+        return res.json()
+          .then(json => {
+            if (res.ok) {
+              this.props.onLogin()
+              this.props.history.push('/');
+            } 
+            else {
+              this.setState({error: true, errorMessage : json.error })
+            }
+          })
       })
       .catch(error => {
         alert('Error:', error);

@@ -17,6 +17,7 @@ class MessageFormView extends Component {
     const messageData = { messageText: this.state.messageData };
 
     fetch(postMessageUrl, {
+      credentials: 'include',
       method: 'POST',
       body: JSON.stringify(messageData),
       headers: {

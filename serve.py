@@ -43,8 +43,10 @@ def get_message(message_id):
 @app.route("/spirit/api/v1.0/me", methods=["GET"])
 def get_user():
     """checks if user is logged in"""
-    if session.get("id") == True:
-        return jsonify({"loggedOut": False}), 200
+
+    if session.get("logged_in") == True:
+        return jsonify({"loggedOut": False,
+                "user_id" : session.get("id")}), 200
     return jsonify({"loggedOut": True}), 200
 
 @app.route("/spirit/api/v1.0/message", methods=["POST"])
@@ -80,6 +82,12 @@ def register_user():
             user = User(email=email, password=pass_hash)
             db.session.add(user)
             db.session.commit()
+            
+            newUser = User.query.filter_by(email=email).first()
+            session["id"] = newUser.user_id
+            session['logged_in'] = True
+            print(session)
+            return jsonify({"success": "registered and logged in"}), 200
         else:
             return jsonify({"error": "User aleady exists"}), 400
     return data
