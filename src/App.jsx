@@ -10,22 +10,25 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedOut : true
+      session: {
+        
+      }
     };
   }
   
-  getMe = () => {
-    UserProfile().then((loggedOut)=>{
-      this.setState({loggedOut: loggedOut })
+  getSession = () => {
+    UserProfile().then((session)=>{
+      this.setState({session: session })
     });
   }
+
   componentDidMount(){
-    this.getMe()
+    this.getSession()
   }
   render() {
     return (
       <div id="main">
-        <Navbar onLogin={() => this.getMe()}  onlogOut={()=> this.getMe() } />
+        <Navbar session={this.state.session} onLogin={() => this.getSession()}  onlogOut={()=> this.getSession() } />
         <Map />
       </div>
     );

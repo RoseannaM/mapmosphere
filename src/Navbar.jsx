@@ -7,7 +7,6 @@ import {
   Link,
   BrowserRouter as Router
 } from 'react-router-dom';
-import UserProfile from './UserProfile';
 import RegistrationForm from './RegistrationForm';
 import MessageForm from './MessageForm';
 import LoginForm from './LoginForm';
@@ -33,16 +32,14 @@ class Navbar extends Component {
       }
     })
       .then(res => {
-        return res.json()
-          .then(json => {
-            if (res.ok) {
-              this.props.onlogOut()
-              this.props.history.push('/');
-            } 
-            else {
-              this.setState({error: true, errorMessage : json.error })
-            }
-          })
+        return res.json().then(json => {
+          if (res.ok) {
+            this.props.onlogOut();
+            this.props.history.push('/');
+          } else {
+            this.setState({ error: true, errorMessage: json.error });
+          }
+        });
       })
       .catch(error => {
         console.error('Error:', error);
@@ -50,14 +47,15 @@ class Navbar extends Component {
   };
 
   render() {
-    const { onLogin} = this.props;
-    const loggedOut = window.loggedOut;
+    const { onLogin, session } = this.props;
+    const logged_in = session.logged_in;
+    console.log("logged_in:",logged_in);
     return (
       <div>
         <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
           <div className="navbar-nav-scroll">
             <ul className="navbar-nav bd-navbar-nav flex-row">
-              {loggedOut || (
+              {logged_in && (
                 <li className="nav-item">
                   <Link to="/message"> New Message </Link>
                 </li>
@@ -65,7 +63,7 @@ class Navbar extends Component {
             </ul>
           </div>
           <ul className="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-            {(loggedOut && (
+            {logged_in || (
               <div className="login-btns">
                 <li>
                   <Link to="/login">Login</Link>
@@ -74,7 +72,8 @@ class Navbar extends Component {
                   <Link to="/register">Register</Link>
                 </li>
               </div>
-            )) || (
+            )}
+            {logged_in && (
               <li>
                 <Link to="/logout" onClick={this.handleLogout}>
                   Logout
@@ -83,7 +82,6 @@ class Navbar extends Component {
             )}
           </ul>
         </header>
-        {/* <Route path="/register" component={RegistrationForm} /> */}
         <Route
           path="/register"
           render={() => <RegistrationForm onLogin={onLogin} />}
@@ -95,4 +93,4 @@ class Navbar extends Component {
     );
   }
 }
-export default withRouter(Navbar)
+export default withRouter(Navbar);

@@ -5,7 +5,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from database_methods import create_geoJson
-from model import connect_to_db, db, Message, User
+from model import connect_to_db, db, Message, User, LikedMessage
 from datetime import datetime, timedelta
 
 app = Flask(__name__, static_folder="build/static", template_folder="build")
@@ -28,6 +28,10 @@ def geojson():
     """serve geojson data object"""
     return jsonify(create_geoJson())
 
+@app.route("/spirit/api/v1.0/me", methods=["GET"])
+def get_user():
+    """checks if user is logged in"""
+    return jsonify(dict(session))
 
 # https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
 @app.route("/spirit/api/v1.0/messages", methods=["GET"])
@@ -40,15 +44,6 @@ def get_message(message_id):
     """returns a message by id"""
     return "return single message from database by id"
 
-@app.route("/spirit/api/v1.0/me", methods=["GET"])
-def get_user():
-    """checks if user is logged in"""
-    return jsonify(dict(session))
-    # if session.get("logged_in") == True:
-    #     return jsonify({"loggedOut": False,
-    #             "user_id" : session.get("id")}), 200
-    # return jsonify({"loggedOut": True}), 200
-
 @app.route("/spirit/api/v1.0/message", methods=["POST"])
 def post_message():
     """post a message to the database"""
@@ -57,15 +52,19 @@ def post_message():
     lng = geoip_data.get('location').get('lng')
     
     current_time = datetime.utcnow()
-    testMessageTime = current_time - timedelta(hours=26)
-    testMessage = Message(message_text="test message_text", created_at=testMessageTime, lat=0, lng=0)
     data = request.get_json()
     message_text = data["messageText"]
     message = Message(message_text=message_text, created_at=current_time, lat=lat, lng=lng)
     db.session.add(message)
-    db.session.add(testMessage)
     db.session.commit()
     return data
+
+@app.route("/spirit/api/v1.0/favourites/create", methods=["POST"])
+def like_message():
+    """adds message to liked messages table"""
+    data = request.get_json()
+    message_id = data["messageText"]
+    user_id = data["userId"]
 
 @app.route("/spirit/api/v1.0/register", methods=["POST"])
 def register_user():
@@ -113,13 +112,12 @@ def login_user():
                 return jsonify({"success": "logged in"}), 200
             else:
                 return jsonify({"error": "Wrong password"}), 400
-
     return data
 
 @app.route("/spirit/api/v1.0/logout", methods=["POST"])
 def logout_user():
     """remove user from session"""
-    session.pop('logged_in', None)
+    session['logged_in'] = False
     session.pop("id", None)
     return jsonify({"success": "logged out"}), 200
 
