@@ -29,7 +29,7 @@ class App extends Component {
     return (
       <div id="main">
         <Navbar session={this.state.session} onLogin={() => this.getSession()}  onlogOut={()=> this.getSession() } />
-        <Map />
+        <Map session={this.state.session} />
       </div>
     );
   }

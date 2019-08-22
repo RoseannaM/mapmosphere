@@ -49,7 +49,6 @@ class Navbar extends Component {
   render() {
     const { onLogin, session } = this.props;
     const logged_in = session.logged_in;
-    console.log("logged_in:",logged_in);
     return (
       <div>
         <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">

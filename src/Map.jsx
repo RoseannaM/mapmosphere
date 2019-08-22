@@ -100,7 +100,9 @@ class MapCompTest extends Component {
   };
   
   render() {
+    
     const { popup, geojson, clickedFeature } = this.state;
+    const session = this.props.session
     return (
       <div>
         <Map
@@ -138,6 +140,8 @@ class MapCompTest extends Component {
               const id = parseInt(params.match.params.id);
               return (
                 <MessagePopup
+                  session={session}
+                  messageId={id}
                   text={this.getFeature(geojson, id).properties.text}
                 />
               );
