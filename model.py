@@ -20,6 +20,8 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(128), nullable=True)
 
+    likes = db.relationship('Message', secondary="liked_messages")
+
     def __repr__(self):
         """Provide helpful representation of User instance when printed."""
         return f"<User user_id={self.user_id} email={self.email}>"
