@@ -64,8 +64,29 @@ class MapCompTest extends Component {
     return coord;
   };
 
+  likeMessage = (message_id, state) => {
+    //modifiy geojson to match new state
+    const feature = this.getFeature(this.state.geojson, message_id);
+    this.setState({
+      geojson: {
+        features: [
+          ...this.state.geojson.features.filter(f => {
+            return f !== feature;
+          }), // filter fearture we're updating
+          // put updated feature here
+          {
+            ...feature,
+            properties: {
+              ...feature.properties,
+              liked: state
+            }
+          }
+        ]
+      }
+    });
+  };
   componentDidMount() {
-    fetch(geojsonUrl, {credentials: 'include'})
+    fetch(geojsonUrl, { credentials: 'include' })
       .then(res => res.json())
       .then(myJson => {
         this.setState({ geojson: myJson });
@@ -93,16 +114,15 @@ class MapCompTest extends Component {
   handleMapClick = e => {
     this.setState({ clickedFeature: undefined });
   };
-  
+
   onStyleLoad = map => {
     const { onStyleLoad } = this.props;
     return onStyleLoad && onStyleLoad(map);
   };
-  
+
   render() {
-    
     const { popup, geojson, clickedFeature } = this.state;
-    const session = this.props.session
+    const session = this.props.session;
     return (
       <div>
         <Map
@@ -138,10 +158,13 @@ class MapCompTest extends Component {
             path="/view-message/:id"
             render={params => {
               const id = parseInt(params.match.params.id);
+              const feature = this.getFeature(geojson, id);
               return (
                 <MessagePopup
+                  likeMessage={this.likeMessage}
+                  liked={feature.properties.liked}
                   session={session}
-                  messageId={id}
+                  message_id={id}
                   text={this.getFeature(geojson, id).properties.text}
                 />
               );

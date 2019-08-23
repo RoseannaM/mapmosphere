@@ -65,41 +65,38 @@ def post_message():
     return data
 
 
-# @app.route("/spirit/api/v1.0/favourites/<int:user_id>", methods=["GET"])
-# def liked_messages(user_id):
-#     """gets all liked messages"""
-#     user_id = user_id
-#     all_messages = {}
-
-#     existingUser = User.query.filter_by(user_id=user_id).first()
-#     if user is None:
-#             return jsonify({"error": "User does not exist"}), 400
-#     if existingUser:
-#         user = User.query.filter(User.user_id == user_id).options(
-#             db.joinedload("liked_messages")).one()
-
-#         for message in user.likes:
-#             all_messages[message.message_id] = {
-#                 "message_text": message.message_text,
-#                 "created_at": message.created_at,
-#                 "lat": message.lat,
-#                 "lng": message.lng
-#             }
-#         return jsonify(all_messages), 200
-#     else:
-#         return jsonify({"error": "No user with that id"}), 400
-
-
-@app.route("/spirit/api/v1.0/favourites/create", methods=["POST"])
-def like_message():
+@app.route("/spirit/api/v1.0/messages/<int:message_id>/like", methods=["POST"])
+def like_message(message_id):
     """adds message to liked messages table"""
-    data = request.get_json()
-    message_id = data["messageId"]
-    user_id = data["userId"]
+    user_id = session["id"]
+
     liked_message = LikedMessage(message_id=message_id, user_id=user_id)
+
     db.session.add(liked_message)
+
     db.session.commit()
-    return data
+
+    if liked_message:
+        return jsonify({"success": "likedn"}), 200
+    else:
+        return jsonify({"error": "Message does not exist"}), 400
+
+
+@app.route("/spirit/api/v1.0/messages/<int:message_id>/like", methods=["DELETE"])
+def unlike_message(message_id):
+    """adds message to liked messages table"""
+    user_id = session["id"]
+    liked_message = LikedMessage.query.filter_by(
+        message_id=message_id, user_id=user_id).first()
+    message = LikedMessage.query.get(liked_message.liked_message_id)
+
+    db.session.delete(message)
+    db.session.commit()
+
+    if liked_message:
+        return jsonify({"success": "liked"}), 200
+    else:
+        return jsonify({"error": "Message does not exist"}), 400
 
 
 @app.route("/spirit/api/v1.0/register", methods=["POST"])
@@ -121,7 +118,6 @@ def register_user():
             newUser = User.query.filter_by(email=email).first()
             session["id"] = newUser.user_id
             session['logged_in'] = True
-            print(session)
             return jsonify({"success": "registered and logged in"}), 200
         else:
             return jsonify({"error": "User aleady exists"}), 400
