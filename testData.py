@@ -82,7 +82,7 @@ def create_test_data():
     def addLikedMessage():
         """add a message to liked list"""
 
-        for num in range(1,4):
+        for num in range(3,5):
             likeMessage = LikedMessage(message_id=num,user_id=2)
             db.session.add(likeMessage)
         db.session.commit()

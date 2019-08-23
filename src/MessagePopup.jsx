@@ -17,30 +17,11 @@ export default class MessagePopup extends Component {
     };
   }
 
-  //check if they have liked before, it should toggle
-  isLiked = (e) => {
-    const id = this.props.session.id;
-    const url =
-      'http://0.0.0.0:5000/spirit/api/v1.0/favourites/' + 2;
-    fetch(url)
-      .then(res => {
-        return res.json().then(json => {
-          if (res.ok) {
-            console.log("test")
-            //console.log(JSON.stringify(json).keys().find(1));
-          } else {
-            this.setState({ error: true, errorMessage: json.error });
-          }
-        });
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  };
+ 
 
   handleLike = (e) => {
     e.preventDefault();
-    this.isLiked()
+    
     
     // const postMessageUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/favourites/create';
     // const args = { message_id:  this.props.messageId,  user_id : this.state.password };

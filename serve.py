@@ -18,17 +18,16 @@ simple_geoip = SimpleGeoIP(app)
 
 prod = 'postgresql:///mapmosphere'
 test = 'postgresql:///testdb'
-
-
+testingSession = None
 @app.route("/")
 def home():
     return render_template('index.html')
 
 
-@app.route("/spirit/api/v1.0/geojson.json")
+@app.route("/spirit/api/v1.0/geojson.json", methods=["GET"])
 def geojson():
     """serve geojson data object"""
-    return jsonify(create_geoJson())
+    return jsonify(create_geoJson(session))
 
 
 @app.route("/spirit/api/v1.0/me", methods=["GET"])
@@ -66,28 +65,30 @@ def post_message():
     return data
 
 
-@app.route("/spirit/api/v1.0/favourites/<int:user_id>", methods=["GET"])
-def liked_messages(user_id):
-    """gets all liked messages"""
-    user_id = user_id
-    all_messages = {}
+# @app.route("/spirit/api/v1.0/favourites/<int:user_id>", methods=["GET"])
+# def liked_messages(user_id):
+#     """gets all liked messages"""
+#     user_id = user_id
+#     all_messages = {}
 
-    existingUser = User.query.filter_by(user_id=user_id).first()
-    
-    if existingUser is None:
-            return jsonify({"error": "User does not exist"}), 400
-    else:
-        user = User.query.filter(User.user_id == user_id).options(
-            db.joinedload("liked_messages")).one()
+#     existingUser = User.query.filter_by(user_id=user_id).first()
+#     if user is None:
+#             return jsonify({"error": "User does not exist"}), 400
+#     if existingUser:
+#         user = User.query.filter(User.user_id == user_id).options(
+#             db.joinedload("liked_messages")).one()
 
-        for message in user.likes:
-            all_messages[message.message_id] = {
-                "message_text": message.message_text,
-                "created_at": message.created_at,
-                "lat": message.lat,
-                "lng": message.lng
-            }
-        return jsonify(all_messages), 200
+#         for message in user.likes:
+#             all_messages[message.message_id] = {
+#                 "message_text": message.message_text,
+#                 "created_at": message.created_at,
+#                 "lat": message.lat,
+#                 "lng": message.lng
+#             }
+#         return jsonify(all_messages), 200
+#     else:
+#         return jsonify({"error": "No user with that id"}), 400
+
 
 @app.route("/spirit/api/v1.0/favourites/create", methods=["POST"])
 def like_message():

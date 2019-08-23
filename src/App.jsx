@@ -26,10 +26,11 @@ class App extends Component {
     this.getSession()
   }
   render() {
+    const loggedIn = this.state.session["logged_in"]
     return (
       <div id="main">
         <Navbar session={this.state.session} onLogin={() => this.getSession()}  onlogOut={()=> this.getSession() } />
-        <Map session={this.state.session} />
+        <Map session={this.state.session} loggedIn={loggedIn} />
       </div>
     );
   }

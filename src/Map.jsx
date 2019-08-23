@@ -65,7 +65,7 @@ class MapCompTest extends Component {
   };
 
   componentDidMount() {
-    fetch(geojsonUrl)
+    fetch(geojsonUrl, {credentials: 'include'})
       .then(res => res.json())
       .then(myJson => {
         this.setState({ geojson: myJson });
