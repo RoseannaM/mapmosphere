@@ -16,9 +16,6 @@ class Modal extends Component {
         className === 'fa fa-times') {
         this.props.history.push('/')
     }
-    // if (!this.modalDiv.current.isSameNode(e.target)) {
-    //   this.props.history.push('/')
-    // }
   };
 
   render() {

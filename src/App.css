@@ -12,7 +12,6 @@ form textarea {
 
 header {
   z-index: 1300;
-  background-color: #e7caec;
 }
  header li {
    margin: 0 7px;
@@ -68,9 +67,44 @@ header {
   border: none;
   margin: 5px;
 }
+
 .like-btn svg path{
   fill: red;
 }
 .login-btns {
   display: contents;
+}
+.navbar-nav li {
+  font-size: 1.5em;
+  border: solid 3px #75cff0;
+  border-radius: 10px;
+  padding: 0.2em;
+  background-color: #bfeeff;
+}
+.nav-item svg {
+  margin: 0 0 0 0.5em;
+}
+#new-message svg path{
+  fill: pink;
+  stroke: black;
+  stroke-width: 30;
+  stroke-linecap: round;
+}
+#all-likes svg path{
+  fill: #e152ee;
+}
+#logout svg path{
+  fill: #9326e1;
+}
+.all-likes{
+  z-index: 2000;
+  display: block;
+  position:fixed;
+  border-radius: 10px;
+  background: white;
+  width: 50%;
+  height: auto;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
 }

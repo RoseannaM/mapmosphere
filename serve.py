@@ -4,7 +4,7 @@ from flask_simple_geoip import SimpleGeoIP
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from database_methods import create_geoJson
+from database_methods import create_geoJson, create_liked_features
 from model import connect_to_db, db, Message, User, LikedMessage
 from datetime import datetime, timedelta
 
@@ -82,9 +82,28 @@ def like_message(message_id):
         return jsonify({"error": "Message does not exist"}), 400
 
 
+@app.route("/spirit/api/v1.0/message/<int:user_id>/like", methods=["GET"])
+def get_liked_messages(user_id):
+    """returns all liked messages by user id"""
+     
+    page = request.args.get('page', 1, type=int)
+
+    liked_messages = LikedMessage.query.filter_by(user_id=user_id).paginate(page, 10, False)
+
+    if liked_messages.has_next:
+        print('yes')
+    else:
+        print("no")
+    
+
+    if user_id == session["id"]:
+        return jsonify(create_liked_features(liked_messages)), 200
+    else:
+        return jsonify({"error": "not authorised"}), 400
+
 @app.route("/spirit/api/v1.0/messages/<int:message_id>/like", methods=["DELETE"])
 def unlike_message(message_id):
-    """adds message to liked messages table"""
+    """removes message from liked messages table"""
     user_id = session["id"]
     liked_message = LikedMessage.query.filter_by(
         message_id=message_id, user_id=user_id).first()

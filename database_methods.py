@@ -21,6 +21,27 @@ def get_all_liked_messages(user_id):
     return all_liked
 
 
+def create_liked_features(messages):
+    """create features for liked messages"""
+
+    liked_features = []
+    for m in messages.items:
+        message = m.message
+        feature = {"type": "Feature",
+                   "properties": {
+                       "id": message.message_id,
+                       "text": message.message_text,
+                       "liked": True
+                   },
+                   "geometry": {
+                       "type": "Point",
+                       "coordinates": [message.lat, message.lng]
+                   }
+                   }
+        liked_features.append(feature)
+    return liked_features
+
+
 def create_geoJson(session):
     """create geojson object"""
     liked_messages = set()

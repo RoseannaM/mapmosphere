@@ -12,7 +12,7 @@ class MessageFormView extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(e);
+
     const postMessageUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/message';
     const messageData = { messageText: this.state.messageData };
 
@@ -23,12 +23,15 @@ class MessageFormView extends Component {
       headers: {
         'Content-Type': 'application/json'
       }
+    }).then(res => {
+      return res.json()
+      .then(json => {
+        if (res.ok) {
+          console.log('Success:', JSON.stringify(json));
+          this.props.history.push('/')
+        }
+      });
     })
-      .then(res => res.json())
-      .then(response => {
-        this.props.history.push('/')
-        console.log('Success:', JSON.stringify(response));
-      })
       .catch(error => console.error('Error:', error));
   };
 

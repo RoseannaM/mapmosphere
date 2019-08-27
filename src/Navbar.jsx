@@ -7,10 +7,13 @@ import {
   Link,
   BrowserRouter as Router
 } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import {faPencilAlt, faHeart, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
 import RegistrationForm from './RegistrationForm';
 import MessageForm from './MessageForm';
 import LoginForm from './LoginForm';
-import MessagePopup from './MessagePopup';
+import AllLikes from './AllLikes';
 
 class Navbar extends Component {
   constructor(props) {
@@ -53,34 +56,48 @@ class Navbar extends Component {
       <div>
         <header className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
           <div className="navbar-nav-scroll">
+          {logged_in && (
             <ul className="navbar-nav bd-navbar-nav flex-row">
-              {logged_in && (
-                <li className="nav-item">
-                  <Link to="/message"> New Message </Link>
+              
+                <li id="new-message" className="nav-item">
+                  <Link to="/message">
+                    New
+                    <FontAwesomeIcon icon={faPencilAlt} />
+                   </Link>
                 </li>
-              )}
+                <li id="all-likes" className="nav-item">
+                <Link to="/likes">
+                  Likes
+                  <FontAwesomeIcon icon={faHeart} />
+                </Link>
+                </li>
+              
             </ul>
+            )}
           </div>
           <ul className="navbar-nav flex-row ml-md-auto d-none d-md-flex">
             {logged_in || (
-              <div className="login-btns">
-                <li>
+              <div className="nav-item login-btns">
+                <li id="login">
                   <Link to="/login">Login</Link>
                 </li>
-                <li>
+                <li id="register">
                   <Link to="/register">Register</Link>
                 </li>
               </div>
             )}
             {logged_in && (
-              <li>
+              <li id="logout" className="nav-item">
                 <Link to="/logout" onClick={this.handleLogout}>
                   Logout
+                  <FontAwesomeIcon icon={faSignOutAlt}/>
                 </Link>
               </li>
             )}
           </ul>
         </header>
+        <Route path="/likes" render={() => <AllLikes session={session}/>} />
+        {/* <Route path="/likes" render={() => <List />} /> */}
         <Route
           path="/register"
           render={() => <RegistrationForm onLogin={onLogin} />}

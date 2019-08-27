@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import 'styled-components/macro';
-import styled from 'styled-components';
-import ReactMapboxGl, { Popup } from 'react-mapbox-gl';
-import MapboxGL from 'mapbox-gl';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import {
   faHeart as faHeartSolid,
-  faLeaf
 } from '@fortawesome/free-solid-svg-icons';
-import UserProfile from './UserProfile';
 
 export default class MessagePopup extends Component {
   handleLike = e => {
@@ -30,7 +25,8 @@ export default class MessagePopup extends Component {
       }
     })
       .then(res => {
-        return res.json().then(json => {
+        return res.json()
+        .then(json => {
           if (res.ok) {
             const state = liked ? false : true;
             this.props.likeMessage(message_id, state);
