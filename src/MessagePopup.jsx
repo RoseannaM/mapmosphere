@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import 'styled-components/macro';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
@@ -40,7 +39,7 @@ export default class MessagePopup extends Component {
     const { session, liked } = this.props;
     const loggedIn = session.logged_in;
     return (
-      <Modal id="message-modal">
+      <Modal id="message-popup-modal">
         <div className={'message'}>
           <p>{this.props.text}</p>
         </div>

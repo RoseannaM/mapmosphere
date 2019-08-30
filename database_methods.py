@@ -20,7 +20,6 @@ def get_all_liked_messages(user_id):
     all_liked = set(User.query.get(user_id).likes)
     return all_liked
 
-
 def create_liked_features(messages):
     """create features for liked messages"""
 
@@ -50,7 +49,7 @@ def create_geoJson(session):
         user_id = session["id"]
         # set liked to either true or false for each message
         liked_messages = get_all_liked_messages(user_id)
-
+    
     features = []
     messages = get_active_messages()
 

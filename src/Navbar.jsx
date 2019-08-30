@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {faPencilAlt, faHeart, faSignOutAlt} from '@fortawesome/free-solid-svg-icons';
+import {faPencilAlt, faHeart, faSignOutAlt, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import RegistrationForm from './RegistrationForm';
 import MessageForm from './MessageForm';
 import LoginForm from './LoginForm';
@@ -62,10 +62,10 @@ class Navbar extends Component {
                 <li id="new-message" className="nav-item">
                   <Link to="/message">
                     New
-                    <FontAwesomeIcon icon={faPencilAlt} />
+                    <FontAwesomeIcon icon={faPlusCircle} />
                    </Link>
                 </li>
-                <li id="all-likes" className="nav-item">
+                <li id="all-likes" className="nav-item solid-like">
                 <Link to="/likes">
                   Likes
                   <FontAwesomeIcon icon={faHeart} />
@@ -97,7 +97,6 @@ class Navbar extends Component {
           </ul>
         </header>
         <Route path="/likes" render={() => <AllLikes session={session}/>} />
-        {/* <Route path="/likes" render={() => <List />} /> */}
         <Route
           path="/register"
           render={() => <RegistrationForm onLogin={onLogin} />}

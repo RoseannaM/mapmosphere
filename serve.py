@@ -97,7 +97,7 @@ def get_liked_messages(user_id):
     
 
     if user_id == session["id"]:
-        return jsonify(create_liked_features(liked_messages)), 200
+        return jsonify(create_liked_features(liked_messages), liked_messages.has_next), 200
     else:
         return jsonify({"error": "not authorised"}), 400
 

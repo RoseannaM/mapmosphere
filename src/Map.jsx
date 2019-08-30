@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import 'styled-components/macro';
 import styled from 'styled-components';
 import MessagePopup from './MessagePopup';
 import {
