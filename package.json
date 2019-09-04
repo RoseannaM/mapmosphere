@@ -10,10 +10,12 @@
     "react": "^16.8.6",
     "react-cookie": "^4.0.1",
     "react-dom": "^16.8.6",
+    "react-infinite-scroll-hook": "^2.0.0",
     "react-map-gl": "^5.0.7",
     "react-mapbox-gl": "^4.6.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "simplebar-react": "^1.2.0",
     "styled-components": "^4.3.2"
   },
   "scripts": {

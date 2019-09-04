@@ -6,6 +6,8 @@ import {
   Link,
   BrowserRouter as Router
 } from 'react-router-dom';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 import Modal from './Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
@@ -80,9 +82,10 @@ class AllLikes extends Component {
     if (!this.props.session) return null;
     const { allLikedFeatures } = this.state;
     return (
-      <Modal scroll={this.handleScroll} id="liked-message-modal">
+      <Modal scroll={this.handleScroll} formName={'Liked Messages'} id="liked-message-modal">
         {allLikedFeatures.length > 0 && (
-          <ul className={'liked-message-list'}>
+          <ul id={'liked-message-list'}>
+            <SimpleBar style={{ height: '100px'}}>
             {allLikedFeatures.map((feature, i) => (
               <div key={i} id={'liked-feature-btn'}>
                 <Link to={`view-message/` + feature.properties.id}>
@@ -90,6 +93,7 @@ class AllLikes extends Component {
                 </Link>
               </div>
             ))}
+            </SimpleBar>
           </ul>
         )}
         <div>

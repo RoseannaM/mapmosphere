@@ -4,7 +4,7 @@ from flask_simple_geoip import SimpleGeoIP
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from database_methods import create_geoJson, create_liked_features
+from database_methods import create_geoJson, create_liked_features, message_to_feature
 from model import connect_to_db, db, Message, User, LikedMessage
 from datetime import datetime, timedelta
 
@@ -62,7 +62,7 @@ def post_message():
                       created_at=current_time, lat=lat, lng=lng)
     db.session.add(message)
     db.session.commit()
-    return data
+    return message_to_feature(message, None)
 
 
 @app.route("/spirit/api/v1.0/messages/<int:message_id>/like", methods=["POST"])
@@ -174,6 +174,12 @@ def logout_user():
     session.pop("id", None)
     return jsonify({"success": "logged out"}), 200
 
+
+@app.route("/spirit/api/v1.0/images/<string:location>", methods=["GET"])
+def get_images(location):
+    """returns the most recent images by location data"""
+
+    return "return images"
 
 if __name__ == "__main__":
     app.debug = True

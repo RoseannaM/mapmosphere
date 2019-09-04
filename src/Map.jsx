@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import MessagePopup from './MessagePopup';
+import MessageForm from './MessageForm';
 import {
   withRouter,
   Redirect,
@@ -8,15 +9,7 @@ import {
   Link,
   BrowserRouter as Router
 } from 'react-router-dom';
-import ReactMapboxGl, {
-  GeoJSONLayer,
-  ZoomControl,
-  Marker,
-  Layer,
-  Feature,
-  Cluster,
-  Popup
-} from 'react-mapbox-gl';
+import ReactMapboxGl, { ZoomControl, Layer, Feature } from 'react-mapbox-gl';
 import Modal from './Modal';
 import MapboxGL from 'mapbox-gl';
 
@@ -24,11 +17,12 @@ const geojsonUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/geojson.json';
 
 const mapStyle = {
   position: 'absolute',
-  top: '0',
-  bottom: '0',
-  width: '100%',
-  height: ' 100%',
-  flex: 1
+  top: '5%',
+  left: '5%',
+  width: '90%',
+  height: '90%',
+  flex: 1,
+  border: 'solid #ffffff 5px'
 };
 
 const paint = {
@@ -63,12 +57,24 @@ class MapCompTest extends Component {
     return coord;
   };
 
+  addMessage = (message) => {
+    this.setState({
+      geojson: {
+        features: [
+          ...this.state.geojson.features,
+          message
+        ]
+      }
+    })
+  };
+
   likeMessage = (message_id, state) => {
     //modifiy geojson to match new state
     const feature = this.getFeature(this.state.geojson, message_id);
     this.setState({
       geojson: {
         features: [
+          //spread all except the one we will mutate
           ...this.state.geojson.features.filter(f => {
             return f !== feature;
           }), // filter fearture we're updating
@@ -84,6 +90,7 @@ class MapCompTest extends Component {
       }
     });
   };
+
   componentDidMount() {
     fetch(geojsonUrl, { credentials: 'include' })
       .then(res => res.json())
@@ -152,6 +159,10 @@ class MapCompTest extends Component {
             ))}
           </Layer>
         </Map>
+        <Route
+          path="/message"
+          render={() => <MessageForm addMessage={this.addMessage} />}
+        />
         {geojson.features.length > 0 && (
           <Route
             path="/view-message/:id"

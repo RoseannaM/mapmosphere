@@ -101,7 +101,6 @@ class Navbar extends Component {
           path="/register"
           render={() => <RegistrationForm onLogin={onLogin} />}
         />
-        <Route path="/message" component={MessageForm} />
         <Route path="/logout" />
         <Route path="/login" render={() => <LoginForm onLogin={onLogin} />} />
       </div>

@@ -20,23 +20,30 @@ def get_all_liked_messages(user_id):
     all_liked = set(User.query.get(user_id).likes)
     return all_liked
 
+
+def message_to_feature(message, liked):
+    """return single feature object"""
+
+    feature = {"type": "Feature",
+               "properties": {
+                       "id": message.message_id,
+                       "text": message.message_text,
+                       "liked": liked
+               },
+               "geometry": {
+                   "type": "Point",
+                   "coordinates": [message.lat, message.lng]
+               }
+               }
+    return feature
+
+
 def create_liked_features(messages):
     """create features for liked messages"""
 
     liked_features = []
-    for m in messages.items:
-        message = m.message
-        feature = {"type": "Feature",
-                   "properties": {
-                       "id": message.message_id,
-                       "text": message.message_text,
-                       "liked": True
-                   },
-                   "geometry": {
-                       "type": "Point",
-                       "coordinates": [message.lat, message.lng]
-                   }
-                   }
+    for message in messages.items:
+        feature = message_to_feature(message.message, True)
         liked_features.append(feature)
     return liked_features
 
@@ -49,22 +56,14 @@ def create_geoJson(session):
         user_id = session["id"]
         # set liked to either true or false for each message
         liked_messages = get_all_liked_messages(user_id)
-    
+
     features = []
     messages = get_active_messages()
 
     for message in messages:
-        feature = {"type": "Feature",
-                   "properties": {
-                       "id": message.message_id,
-                       "text": message.message_text,
-                       "liked": message in liked_messages if session["logged_in"] else None
-                   },
-                   "geometry": {
-                       "type": "Point",
-                       "coordinates": [message.lat, message.lng]
-                   }
-                   }
+        liked = message in liked_messages if session["logged_in"] else None
+        feature = message_to_feature(message, liked)
+
         features.append(feature)
 
     geoJson = {"type": "FeatureCollection",
