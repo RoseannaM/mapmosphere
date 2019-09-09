@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
 import { withRouter } from 'react-router-dom';
+import { resolve } from 'upath';
 //import fetchPhotos from './fetchPhotos'
 
 class Imageview extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      images : [],
       messageData: ''
     };
   }
@@ -16,7 +18,8 @@ class Imageview extends Component {
     fetch(imageUrl, { credentials: 'include' })
     .then(res => res.json())
     .then(myJson => {
-      console.log(myJson)
+      const images = myJson.graphql.location.edge_location_to_media.edges.slice(0,10);
+      this.setState({ images: images});
     });
   }
 
@@ -25,10 +28,17 @@ class Imageview extends Component {
   };
 
   render() {
+    const images = this.state.images;
+    console.log(images)
     return (
       <Modal id="images-modal">
         <div className={'images'}>
-          <p>THIS IS STUFF</p>
+        {images.length > 0 && images.map((image, i) => (
+            <div key={i}>
+              <p>{image.node.id}</p>
+              <img src={image.node.display_url}/>
+            </div>
+            ))}
         </div>
       </Modal>
     );
