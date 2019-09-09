@@ -28,11 +28,14 @@ def message_to_feature(message, liked):
                "properties": {
                        "id": message.message_id,
                        "text": message.message_text,
-                       "liked": liked
+                       "liked": liked,
+                       "country" : message.country,
+                       "city": message.city,
+                       "state": message.state
                },
                "geometry": {
                    "type": "Point",
-                   "coordinates": [message.lat, message.lng]
+                   "coordinates": [message.lng, message.lat]
                }
                }
     return feature

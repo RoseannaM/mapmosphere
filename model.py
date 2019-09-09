@@ -37,6 +37,9 @@ class Message(db.Model):
     created_at = db.Column(db.DateTime)
     lat = db.Column(db.Float)
     lng = db.Column(db.Float)
+    country = db.Column(db.String(128))
+    state = db.Column(db.String(128))
+    city = db.Column(db.String(128))
 
     def __repr__(self):
         """Provide helpful representation of message instance when printed."""
@@ -62,7 +65,6 @@ class LikedMessage(db.Model):
 #'postgresql:///mapmosphere'
 def connect_to_db(app, db_uri):
     """Connect the database to our Flask app."""
-    # Configure to use our PstgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

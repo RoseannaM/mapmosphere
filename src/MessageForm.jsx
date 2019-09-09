@@ -1,41 +1,59 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
 import { withRouter } from 'react-router-dom';
+import setLocation from './setLocation';
 
 class MessageFormView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      location: {},
       messageData: ''
     };
   }
 
+  getUserLocation = () => {
+    this.setState({ location: setLocation() });
+  };
+  
   handleSubmit = e => {
     e.preventDefault();
+    this.state.location.then(({lat, lng, city, state, country}) => {
+      const postMessageUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/message';
+      const messageData = {
+        messageText: this.state.messageData,
+        lng: lng,
+        lat: lat,
+        city: city ? city.text : null,
+        state: state ? state.text : null,
+        country: country ? country.text : null
+      };
 
-    const postMessageUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/message';
-    const messageData = { messageText: this.state.messageData };
-    this.props.history.push('/');
-    //optimistic loading create a feature and add it
-    fetch(postMessageUrl, {
-      credentials: 'include',
-      method: 'POST',
-      body: JSON.stringify(messageData),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-        return res.json().then(json => {
-          if (res.ok) {
-            console.log('Success:', JSON.stringify(json));
-            this.props.addMessage(json);
-          }
-        });
+      this.props.history.push('/');
+      //optimistic loading create a feature and add it
+      fetch(postMessageUrl, {
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify(messageData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
-      .catch(error => console.error('Error:', error));
+        .then(res => {
+          return res.json().then(json => {
+            if (res.ok) {
+              console.log('Success:', JSON.stringify(json));
+              this.props.addMessage(json);
+            }
+          });
+        })
+        .catch(error => console.error('Error:', error));
+    })
   };
 
+  componentDidMount() {
+    this.getUserLocation();
+  }
   handleChange = e => {
     this.setState({ messageData: e.target.value });
   };

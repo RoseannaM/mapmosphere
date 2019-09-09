@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {
   withRouter,
-  Redirect,
-  Route,
   Link,
   BrowserRouter as Router
 } from 'react-router-dom';
@@ -15,7 +13,6 @@ import {
   faHeart as faHeartSolid,
   faLeaf
 } from '@fortawesome/free-solid-svg-icons';
-import UserProfile from './UserProfile';
 
 class AllLikes extends Component {
   constructor(props) {

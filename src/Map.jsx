@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import MessagePopup from './MessagePopup';
 import MessageForm from './MessageForm';
+import Imageview from './Imageview';
+
 import {
   withRouter,
   Redirect,
@@ -34,8 +36,7 @@ const paint = {
   'circle-stroke-opacity': 0.5
 };
 const Map = ReactMapboxGl({
-  accessToken:
-    'pk.eyJ1Ijoicm9zZWFubmFtIiwiYSI6ImNqeWdrd2R2cTAyNHMzbW8wZmNqd2NnNjgifQ.NhBR5dNoezc0iAqQ-10pIA'
+  accessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN
 });
 
 class MapCompTest extends Component {
@@ -57,15 +58,12 @@ class MapCompTest extends Component {
     return coord;
   };
 
-  addMessage = (message) => {
+  addMessage = message => {
     this.setState({
       geojson: {
-        features: [
-          ...this.state.geojson.features,
-          message
-        ]
+        features: [...this.state.geojson.features, message]
       }
-    })
+    });
   };
 
   likeMessage = (message_id, state) => {
@@ -164,22 +162,40 @@ class MapCompTest extends Component {
           render={() => <MessageForm addMessage={this.addMessage} />}
         />
         {geojson.features.length > 0 && (
-          <Route
-            path="/view-message/:id"
-            render={params => {
-              const id = parseInt(params.match.params.id);
-              const feature = this.getFeature(geojson, id);
-              return (
-                <MessagePopup
-                  likeMessage={this.likeMessage}
-                  liked={feature.properties.liked}
-                  session={session}
-                  message_id={id}
-                  text={this.getFeature(geojson, id).properties.text}
-                />
-              );
-            }}
-          />
+          <div>
+            <Route
+              path="/view-message/:id"
+              render={params => {
+                const id = parseInt(params.match.params.id);
+                const feature = this.getFeature(geojson, id);
+                return (
+                  <MessagePopup
+                    likeMessage={this.likeMessage}
+                    liked={feature.properties.liked}
+                    session={session}
+                    message_id={id}
+                    text={feature.properties.text}
+                    country={feature.properties.country}
+                    city={feature.properties.city}
+                  />
+                );
+              }}
+            />
+            <Route 
+              path="/images/:id"
+              render={ params => {
+                const id = parseInt(params.match.params.id);
+                const feature = this.getFeature(geojson, id);
+                return (
+                  <Imageview
+                    city={feature.properties.city}
+                    session={session}
+                    message_id={id}
+                  />
+                );
+              }}
+              />
+          </div>
         )}
       </div>
     );

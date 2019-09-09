@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
+import {
+  withRouter,
+  Redirect,
+  Route,
+  Link,
+  BrowserRouter as Router 
+} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as faHeartRegular, faImages } from '@fortawesome/free-regular-svg-icons';
 import {
   faHeart as faHeartSolid,
 } from '@fortawesome/free-solid-svg-icons';
@@ -36,16 +43,23 @@ export default class MessagePopup extends Component {
   };
 
   render() {
-    const { session, liked } = this.props;
+    const { session, liked, text, city, country, message_id } = this.props;
     const loggedIn = session.logged_in;
     return (
       <Modal id="message-popup-modal">
         <div className={'message'}>
-          <p>{this.props.text}</p>
+          <p>{text}</p>
         </div>
         {loggedIn && (
           <button className="like-btn" onClick={this.handleLike}>
             <FontAwesomeIcon icon={(liked && faHeartSolid) || faHeartRegular} />
+          </button>
+        )}
+        {city && (
+          <button className="images-btn">
+            <Link to={`/images/${message_id}/${city}`}>
+              <FontAwesomeIcon icon={faImages} />
+            </Link>
           </button>
         )}
       </Modal>

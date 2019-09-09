@@ -3,7 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_simple_geoip import SimpleGeoIP
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from fetch_images import get_images
 from database_methods import create_geoJson, create_liked_features, message_to_feature
 from model import connect_to_db, db, Message, User, LikedMessage
 from datetime import datetime, timedelta
@@ -15,10 +15,10 @@ app.config["GEOIPIFY_API_KEY"] = "at_fq3Zklt83usgp4FESotLUAgZPwhFv"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 simple_geoip = SimpleGeoIP(app)
 
-
 prod = 'postgresql:///mapmosphere'
 test = 'postgresql:///testdb'
 testingSession = None
+
 @app.route("/")
 def home():
     return render_template('index.html')
@@ -52,14 +52,21 @@ def get_message(message_id):
 def post_message():
     """post a message to the database"""
     geoip_data = simple_geoip.get_geoip_data()
-    lat = geoip_data.get('location').get('lat')
-    lng = geoip_data.get('location').get('lng')
+    #lat = geoip_data.get('location').get('lat', None)
+    #lng = geoip_data.get('location').get('lng', None)
+    # country = geoip_data.get('location').get('country', None)
+    # city = geoip_data.get('location').get('city', None)
 
     current_time = datetime.utcnow()
     data = request.get_json()
+    lat = data["lat"]
+    lng = data["lng"]
+    city = data["city"]
+    state = data["state"]
+    country = data["country"]
     message_text = data["messageText"]
     message = Message(message_text=message_text,
-                      created_at=current_time, lat=lat, lng=lng)
+                      created_at=current_time, lat=lat, lng=lng, city=city, state=state, country=country)
     db.session.add(message)
     db.session.commit()
     return message_to_feature(message, None)
@@ -85,21 +92,22 @@ def like_message(message_id):
 @app.route("/spirit/api/v1.0/message/<int:user_id>/like", methods=["GET"])
 def get_liked_messages(user_id):
     """returns all liked messages by user id"""
-     
+
     page = request.args.get('page', 1, type=int)
 
-    liked_messages = LikedMessage.query.filter_by(user_id=user_id).paginate(page, 10, False)
+    liked_messages = LikedMessage.query.filter_by(
+        user_id=user_id).paginate(page, 10, False)
 
     if liked_messages.has_next:
         print('yes')
     else:
         print("no")
-    
 
     if user_id == session["id"]:
         return jsonify(create_liked_features(liked_messages), liked_messages.has_next), 200
     else:
         return jsonify({"error": "not authorised"}), 400
+
 
 @app.route("/spirit/api/v1.0/messages/<int:message_id>/like", methods=["DELETE"])
 def unlike_message(message_id):
@@ -176,10 +184,27 @@ def logout_user():
 
 
 @app.route("/spirit/api/v1.0/images/<string:location>", methods=["GET"])
-def get_images(location):
+def get_images_by_location(location):
     """returns the most recent images by location data"""
+    
+    posts = get_images(location)
 
-    return "return images"
+    print(posts)
+    return posts
+    
+
+
+@app.route("/spirit/api/v1.0/set/location", methods=["POST"])
+def get_location():
+    data = request.get_json()
+    session['lat'] = data['lat']
+    session['lng'] = data['lng']
+    session['city'] = data['city']
+    session['state'] = data['state']
+    session['country'] = data['country']
+
+    return jsonify(dict(session))
+
 
 if __name__ == "__main__":
     app.debug = True

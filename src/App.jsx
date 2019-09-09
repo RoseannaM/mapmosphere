@@ -18,7 +18,7 @@ class App extends Component {
       this.setState({ session: session });
     });
   };
-
+  
   componentDidMount() {
     this.getSession();
   }
