@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import MessagePopup from './MessagePopup';
 import MessageForm from './MessageForm';
 import Imageview from './Imageview';
-
 import {
   withRouter,
   Redirect,
@@ -11,7 +10,14 @@ import {
   Link,
   BrowserRouter as Router
 } from 'react-router-dom';
-import ReactMapboxGl, { ZoomControl, Layer, Feature } from 'react-mapbox-gl';
+import ReactMapboxGl, {
+  Cluster,
+  Marker,
+  ZoomControl,
+  Layer,
+  Feature,
+  Popup
+} from 'react-mapbox-gl';
 import Modal from './Modal';
 import MapboxGL from 'mapbox-gl';
 
@@ -19,12 +25,47 @@ const geojsonUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/geojson.json';
 
 const mapStyle = {
   position: 'absolute',
-  top: '5%',
+  top: '8%',
   left: '5%',
   width: '90%',
-  height: '90%',
+  height: '85%',
   flex: 1,
-  border: 'solid #ffffff 5px'
+  border: '3px solid rgba(255, 0, 212, 0.79)',
+  boxShadow: '1px 1px 8px 4px rgba(188, 8, 232, 0.8)',
+  borderRadius: '4px'
+};
+
+const StyledPopup = styled.div`
+  background: white;
+  color: #3f618c;
+  font-weight: 400;
+  padding: 5px;
+  border-radius: 2px;
+`;
+
+const styles = {
+  clusterMarker: {
+    width: 20,
+    height: 20,
+    borderRadius: '50%',
+    backgroundColor: '#e147dc',
+    boxShadow: 'rgb(225, 71, 220) 0 0 4px 4px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    cursor: 'pointer'
+  },
+  marker: {
+    width: 30,
+    height: 30,
+    borderRadius: '50%',
+    
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '2px solid #C9C9C9'
+  }
 };
 
 const paint = {
@@ -50,6 +91,42 @@ class MapCompTest extends Component {
       clickedFeature: undefined
     };
   }
+
+  clusterMarker = (
+    coordinates,
+    pointCount,
+    getLeaves: (limit, offset) => Array<React.ReactElement<any>>
+  ) => (
+    <Marker
+      key={coordinates.toString()}
+      coordinates={coordinates}
+      style={styles.clusterMarker}
+      onClick={this.clusterClick.bind(this, coordinates, pointCount, getLeaves)}
+    >
+      <div>{pointCount}</div>
+    </Marker>
+  );
+
+  onMove = () => {
+    if (this.state.popup) {
+      this.setState({ popup: undefined });
+    }
+  };
+
+  clusterClick = (
+    coordinates,
+    total,
+    getLeaves: (limit, offset) => Array<React.ReactElement<any>>
+  ) => {
+    this.setState({
+      popup: {
+        coordinates,
+        total,
+        leaves: getLeaves()
+      }
+    });
+  };
+
   createCoord = markerGeoJson => {
     const coord = this.markerGeoJson.features.find(
       feature => feature.properties.id === this.clickedFeature
@@ -137,12 +214,63 @@ class MapCompTest extends Component {
           center={this.center}
           containerStyle={mapStyle}
           onStyleLoad={this.onStyleLoad}
+          renderChildrenInPortal={true}
         >
           <ZoomControl position={'bottom-left'} />
 
-          <Layer
-            id="cluster_layer"
+          <Cluster ClusterMarkerFactory={this.clusterMarker}>
+            {geojson.features.map(
+              (feature, key) => (
+                console.log(feature.geometry.coordinates),
+                (
+                  <Feature
+                    key={key}
+                    style={styles.marker}
+                    coordinates={[
+                      feature.geometry.coordinates[0],
+                      feature.geometry.coordinates[1]
+                    ]}
+                    data-feature={feature}
+                  >
+                    <div title={feature.properties.id}>
+                      {feature.properties.id}
+                    </div>
+                  </Feature>
+                )
+              )
+            )}
+          </Cluster>
+          {popup && (
+            <Popup offset={[0, -50]} coordinates={popup.coordinates}>
+              <StyledPopup>
+                {popup.leaves.map(
+                  (leaf, index) => (
+                    (
+                      <div
+                        id={index}
+                        onClick={this.markerClick.bind(
+                          this,
+                          leaf.props['data-feature']
+                        )}
+                        key={index}
+                      >
+                        {leaf.props['data-feature'].properties.text}
+                      </div>
+                    )
+                  )
+                )}
+                {popup.total > popup.leaves.length ? (
+                  <div>And more...</div>
+                ) : null}
+              </StyledPopup>
+            </Popup>
+          )}
+          {/* <Layer
             type="circle"
+            //layout={layoutLayer} 
+            //images={images}
+            id="cluster_layer"
+            //type="circle"
             layerOptions={{
               filter: ['has', 'point_count']
             }}
@@ -155,7 +283,7 @@ class MapCompTest extends Component {
                 onClick={this.markerClick.bind(this, feature)}
               />
             ))}
-          </Layer>
+          </Layer> */}
         </Map>
         <Route
           path="/message"
@@ -181,9 +309,9 @@ class MapCompTest extends Component {
                 );
               }}
             />
-            <Route 
+            <Route
               path="/images/:id"
-              render={ params => {
+              render={params => {
                 const id = parseInt(params.match.params.id);
                 const feature = this.getFeature(geojson, id);
                 return (
@@ -194,7 +322,7 @@ class MapCompTest extends Component {
                   />
                 );
               }}
-              />
+            />
           </div>
         )}
       </div>

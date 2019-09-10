@@ -1,3 +1,17 @@
+body {
+  overflow: hidden;
+  background-image: linear-gradient(120deg, #b17bd2, #33d0ff);
+  font-family: 'Alegreya Sans', sans-serif;
+}
+/* body::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url(notebook.png);
+  filter: grayscale(100%);
+} */
+
 form {
   display: grid;
   justify-items: center;
@@ -11,11 +25,17 @@ form textarea {
 }
 
 header {
+  margin: 1em 3em;
+  padding: .5rem 0;
   z-index: 1300;
+}
+#nav {
+  padding: .5rem 0;
 }
  header li {
    margin: 0 7px;
  }
+
  .register {
   z-index: 1300;
   position: relative;
@@ -31,7 +51,23 @@ header {
   background-color: rgba(158, 144, 249, 0.6);
 }
 
+.image-wrapper {
+  display: grid;
+  height: 10em;
+  width: 10em;
+}
+.images-grid-layout{
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(3, auto);
+}
+
+#images-modal{
+ width: auto;
+}
 .modal-main {
+  padding: 0 2em;
   display: block;
   position:fixed;
   border-radius: 10px;
@@ -41,6 +77,8 @@ header {
   top:50%;
   left:50%;
   transform: translate(-50%,-50%);
+  border: 2px solid #03f4c8;
+  box-shadow: 0px 0px 5px 3px rgb(29, 168, 249);
 }
 
 #modal-background {
@@ -52,7 +90,32 @@ header {
   width: 100%;
   height: 100%;
 }
+.mapboxgl-map{
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  flex: 1 1 0%;
+  border: solid #ffffff 5px;
+}
+.simplebar-scrollbar:before {
+  background: #a61fe9
+}
+
+.btn {
+  font-size: 1.2em;
+  border-radius: 5px;
+  padding: 0.1em 0.3em;
+  background: linear-gradient(to bottom, #75cff0 5%, #3491b3 100%);
+  font-weight: bold;
+  color: white;
+  margin: 1em;
+  border: none;
+}
 .modal h3 {
+  font-weight: bold;
+  color: #52adce;
   text-align: center;
   margin: 0.5em 0;
 }
@@ -63,38 +126,48 @@ header {
   border: solid 3px #d998fb;
   margin: 0 20px 20px;
 }
-.modal .like-btn {
+.modal .like-btn, .images-btn {
   border: none;
   margin: 5px;
 }
 
+.message textarea {
+  border: 2px solid #a7a2a68a;
+  border-radius: 4px;
+
+}
 .like-btn svg path{
   fill: red;
+}
+
+.images-btn svg path{
+  fill: rgb(43, 147, 226);
 }
 .login-btns {
   display: contents;
 }
 .navbar-nav li {
-  font-size: 1.5em;
-  border: solid 3px #75cff0;
-  border-radius: 10px;
-  padding: 0.2em;
-  background-color: #bfeeff;
+  font-size: 1.2em;
+  border-radius: 5px;
+  padding: 0.1em 0.3em;
+  
+  background: linear-gradient(to bottom, #75cff0 5%, #3491b3 100%);
+  font-weight: bold;
+}
+.navbar-nav li a {
+  color: white;
 }
 .nav-item svg {
   margin: 0 0 0 0.5em;
 }
 #new-message svg path{
-  fill: pink;
-  stroke: black;
-  stroke-width: 30;
-  stroke-linecap: round;
+  fill: #1fe9a6;
 }
-#all-likes svg path{
-  fill: #e152ee;
+.solid-like svg path{
+  fill: #e91e63;
 }
 #logout svg path{
-  fill: #9326e1;
+  fill: #a61fe9;
 }
 .all-likes{
   z-index: 2000;
@@ -107,4 +180,8 @@ header {
   top:50%;
   left:50%;
   transform: translate(-50%,-50%);
+}
+#liked-messages-listv {
+  text-align: center;
+  padding: 0;
 }

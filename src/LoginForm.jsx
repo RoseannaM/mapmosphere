@@ -77,7 +77,7 @@ class LoginFormView extends Component {
               value={password}
               onChange={this.handleChange}
             />
-            <input type="submit" value="Submit" />
+            <input className={"btn"} type="submit" value="Submit" />
           </form>
         </div>
       </Modal>
