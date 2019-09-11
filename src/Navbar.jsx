@@ -8,7 +8,6 @@ import {
   BrowserRouter as Router
 } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {faPencilAlt, faHeart, faSignOutAlt, faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import RegistrationForm from './RegistrationForm';
 import MessageForm from './MessageForm';
@@ -58,7 +57,6 @@ class Navbar extends Component {
           <div className="navbar-nav-scroll">
           {logged_in && (
             <ul className="navbar-nav bd-navbar-nav flex-row">
-              
                 <li id="new-message" className="nav-item">
                   <Link to="/message">
                     New

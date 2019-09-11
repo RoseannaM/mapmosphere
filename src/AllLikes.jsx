@@ -74,7 +74,6 @@ class AllLikes extends Component {
       this.fetchData();
     }
   }
-
   render() {
     if (!this.props.session) return null;
     const { allLikedFeatures } = this.state;

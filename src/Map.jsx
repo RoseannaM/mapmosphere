@@ -45,11 +45,11 @@ const StyledPopup = styled.div`
 
 const styles = {
   clusterMarker: {
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
     borderRadius: '50%',
     backgroundColor: '#e147dc',
-    boxShadow: 'rgb(225, 71, 220) 0 0 4px 4px',
+    boxShadow: 'rgb(225, 71, 220) 0 0 6px 3px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -60,7 +60,7 @@ const styles = {
     width: 30,
     height: 30,
     borderRadius: '50%',
-    
+    backgroundColor: '#E0E0E0',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -70,10 +70,10 @@ const styles = {
 
 const paint = {
   'circle-blur': 0.5,
-  'circle-color': '#eccaec',
-  'circle-radius': 9,
-  'circle-stroke-width': 5,
-  'circle-stroke-color': '#eccaec',
+  'circle-color': '#e147dc',
+  'circle-radius': 8,
+  'circle-stroke-width': 4,
+  'circle-stroke-color': '#e147dc',
   'circle-stroke-opacity': 0.5
 };
 const Map = ReactMapboxGl({
@@ -87,7 +87,7 @@ class MapCompTest extends Component {
     this.state = {
       geojson: { features: [] },
       popup: undefined,
-      zoom: [1],
+      zoom: [1.5],
       clickedFeature: undefined
     };
   }
@@ -116,8 +116,10 @@ class MapCompTest extends Component {
   clusterClick = (
     coordinates,
     total,
-    getLeaves: (limit, offset) => Array<React.ReactElement<any>>
+    getLeaves: (limit, offset) => Array<React.ReactElement<any>>,
+    e
   ) => {
+    e.stopPropagation();
     this.setState({
       popup: {
         coordinates,
@@ -181,9 +183,9 @@ class MapCompTest extends Component {
     );
   };
 
-  zoom = [4];
+  zoom = [9];
 
-  center = [-77.01239, 38.91275];
+  center = [-13.007812, 40.979898];
 
   markerClick = feature => {
     this.setState({
@@ -217,19 +219,15 @@ class MapCompTest extends Component {
           renderChildrenInPortal={true}
         >
           <ZoomControl position={'bottom-left'} />
-
-          <Cluster ClusterMarkerFactory={this.clusterMarker}>
+          <Cluster ClusterMarkerFactory={this.clusterMarker} radius={10}>
             {geojson.features.map(
               (feature, key) => (
-                console.log(feature.geometry.coordinates),
+               
                 (
                   <Feature
                     key={key}
                     style={styles.marker}
-                    coordinates={[
-                      feature.geometry.coordinates[0],
-                      feature.geometry.coordinates[1]
-                    ]}
+                    coordinates={feature.geometry.coordinates}
                     data-feature={feature}
                   >
                     <div title={feature.properties.id}>
@@ -265,7 +263,7 @@ class MapCompTest extends Component {
               </StyledPopup>
             </Popup>
           )}
-          {/* <Layer
+          <Layer
             type="circle"
             //layout={layoutLayer} 
             //images={images}
@@ -283,7 +281,7 @@ class MapCompTest extends Component {
                 onClick={this.markerClick.bind(this, feature)}
               />
             ))}
-          </Layer> */}
+          </Layer>
         </Map>
         <Route
           path="/message"

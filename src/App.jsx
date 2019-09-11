@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Video from './Video'
 import Map from './Map';
 import Navbar from './Navbar';
 import UserProfile from './UserProfile';
@@ -26,6 +27,7 @@ class App extends Component {
     const loggedIn = this.state.session['logged_in'];
     return (
       <div id="main">
+        <Video/>
         <Navbar
           session={this.state.session}
           onLogin={() => this.getSession()}
