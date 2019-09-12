@@ -53,8 +53,8 @@ class Navbar extends Component {
     const logged_in = session.logged_in;
     return (
       <div>
-        <header id="nav" className="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
-          <div className="navbar-nav-scroll">
+        <header id="nav" className="navbar navbar-expand navbar-dark flex-md-row bd-navbar">
+          <div>
           {logged_in && (
             <ul className="navbar-nav bd-navbar-nav flex-row">
                 <li id="new-message" className="nav-item">
@@ -73,7 +73,7 @@ class Navbar extends Component {
             </ul>
             )}
           </div>
-          <ul className="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+          <ul className="navbar-nav flex-row" id="logoutUl">
             {logged_in || (
               <div className="nav-item login-btns">
                 <li id="login">

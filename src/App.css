@@ -25,15 +25,20 @@ form textarea {
   height: 100%;
   resize: none;
 }
-
+#nav {
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  left: 5%;
+  width: 90%;
+}
 header {
   margin: 1em 3em;
   padding: 0.5rem 0;
   z-index: 1300;
 }
-#nav {
-  padding: 0.5rem 0;
-}
+
 header li {
   margin: 0 7px;
 }
@@ -76,7 +81,7 @@ header li {
   position: fixed;
   border-radius: 10px;
   background: white;
-  width: 50%;
+  width: 25em;
   height: auto;
   top: 50%;
   left: 50%;
@@ -135,12 +140,13 @@ header li {
   border: solid 3px #d998fb;
   margin: 0 20px 20px;
 }
-.modal .like-btn, .images-btn {
+.modal .like-btn,
+.images-btn {
   border: none;
   margin: 5px;
 }
 
-#globe-spinner{
+#globe-spinner {
   width: 70px;
   filter: drop-shadow(0 0 04px #33d0ff);
   position: absolute;
@@ -152,9 +158,10 @@ header li {
   margin: 5px;
 }
 #images-modal {
-  padding:0;
+  padding: 0;
 }
-#images-modal h3, #images-modal p {
+#images-modal h3,
+#images-modal p {
   display: none;
 }
 .message p {
@@ -175,6 +182,10 @@ header li {
 }
 .login-btns {
   display: contents;
+}
+
+#logoutUl {
+  margin-left: auto;
 }
 .navbar-nav li {
   font-size: 1.2em;
@@ -213,12 +224,27 @@ header li {
 }
 #liked-message-list {
   text-align: center;
-  padding: 0
+  padding: 0;
 }
 #liked-message-list a {
-  color: #03A9F4;
+  color: #03a9f4;
   font-size: 18px;
-  
+}
+.slide .selected {
+  background: white;
+}
+.carousel .slide {
+  min-width: 100%;
+  background: none;
+}
+.carousel.carousel-slider .control-arrow {
+  top: 0;
+  font-size: 1em;
+  bottom: 0;
+  margin-top: 0;
+  padding: 2px;
+  background-color: #75cff0;
+  border-radius: 2px;
 }
 #liked-messages-listv {
   text-align: center;

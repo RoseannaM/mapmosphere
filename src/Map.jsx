@@ -37,7 +37,7 @@ const mapStyle = {
 
 const StyledPopup = styled.div`
   background: white;
-  color: #3f618c;
+  color: blue;
   font-weight: 400;
   padding: 5px;
   border-radius: 2px;
@@ -182,7 +182,14 @@ class MapCompTest extends Component {
       feature => feature.properties.id === clickedFeature
     );
   };
+  shortenText = (text) =>{
 
+    if(text.length > 20){
+      console.log(text.substring(0,20))
+      return text.substring(0,20) + "..."
+    }
+    else return text
+  }
   zoom = [9];
 
   center = [-13.007812, 40.979898];
@@ -222,7 +229,6 @@ class MapCompTest extends Component {
           <Cluster ClusterMarkerFactory={this.clusterMarker} radius={10}>
             {geojson.features.map(
               (feature, key) => (
-               
                 (
                   <Feature
                     key={key}
@@ -252,7 +258,7 @@ class MapCompTest extends Component {
                         )}
                         key={index}
                       >
-                        {leaf.props['data-feature'].properties.text}
+                        {this.shortenText(leaf.props['data-feature'].properties.text)}
                       </div>
                     )
                   )
@@ -265,8 +271,6 @@ class MapCompTest extends Component {
           )}
           <Layer
             type="circle"
-            //layout={layoutLayer} 
-            //images={images}
             id="cluster_layer"
             //type="circle"
             layerOptions={{
