@@ -2,7 +2,6 @@ import requests
 import os
 from dotenv import load_dotenv
 session_token = os.getenv('SESSION')
-
 baseUrl = 'https://www.instagram.com/'
 topsearch = 'web/search/topsearch/?context=blended&query=/'
 images = 'explore/locations/'
