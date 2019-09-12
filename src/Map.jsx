@@ -37,10 +37,12 @@ const mapStyle = {
 
 const StyledPopup = styled.div`
   background: white;
-  color: blue;
-  font-weight: 400;
+  color: #03a9f4;
+  font-weight: 500;
+  font-size: 1.2em;
   padding: 5px;
   border-radius: 2px;
+  line-height: 1.6;
 `;
 
 const styles = {
@@ -245,12 +247,13 @@ class MapCompTest extends Component {
             )}
           </Cluster>
           {popup && (
-            <Popup offset={[0, -50]} coordinates={popup.coordinates}>
+            <Popup offset={[0, -10]} coordinates={popup.coordinates}>
               <StyledPopup>
                 {popup.leaves.map(
                   (leaf, index) => (
                     (
-                      <div
+                      <div 
+                        className="popup-link"
                         id={index}
                         onClick={this.markerClick.bind(
                           this,
@@ -272,7 +275,6 @@ class MapCompTest extends Component {
           <Layer
             type="circle"
             id="cluster_layer"
-            //type="circle"
             layerOptions={{
               filter: ['has', 'point_count']
             }}

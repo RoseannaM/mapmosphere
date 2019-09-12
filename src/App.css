@@ -113,6 +113,20 @@ header li {
   flex: 1 1 0%;
   border: solid #ffffff 5px;
 }
+.popup-link:hover {
+  cursor: pointer;
+  color: #e048dc;
+}
+.mapboxgl-popup-content {
+  border: 2px solid #03f4c8;
+  box-shadow: 0px 0px 5px 3px rgb(29, 168, 249);
+  border-radius: 10px;
+  cursor: default;
+}
+
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: #26baef;
+}
 .simplebar-scrollbar:before {
   background: #a61fe9;
 }

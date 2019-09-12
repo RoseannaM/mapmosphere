@@ -7,11 +7,13 @@ from fetch_images import get_images
 from database_methods import create_geoJson, create_liked_features, message_to_feature
 from model import connect_to_db, db, Message, User, LikedMessage
 from datetime import datetime, timedelta
-
+import os
+session_token = os.getenv('SESSION')
 app = Flask(__name__, static_folder="build/static", template_folder="build")
 CORS(app, supports_credentials=True)
-app.config['SECRET_KEY'] = "ABC"
-app.config["GEOIPIFY_API_KEY"] = "at_fq3Zklt83usgp4FESotLUAgZPwhFv"
+
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
+app.config["GEOIPIFY_API_KEY"] = os.getenv('GEOIPIFY_API_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 simple_geoip = SimpleGeoIP(app)
 
@@ -186,10 +188,7 @@ def logout_user():
 @app.route("/spirit/api/v1.0/images/<string:location>", methods=["GET"])
 def get_images_by_location(location):
     """returns the most recent images by location data"""
-    
     posts = get_images(location)
-
-    print(posts)
     return posts
     
 
