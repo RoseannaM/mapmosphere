@@ -16,8 +16,6 @@ CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = session_token
 app.config["GEOIPIFY_API_KEY"] = geo
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-<<<<<<< HEAD
-=======
 
 print('\n\n\n\n')
 if not os.environ.get('SECRET_KEY'):
@@ -25,12 +23,9 @@ if not os.environ.get('SECRET_KEY'):
 else:
     print("**~  Success ~** SECRETS LOADED")
 print('\n\n\n\n')
->>>>>>> 8e86f4430143d7d2f7ffefa485cd66a8198bf416
 
 #simple_geoip = SimpleGeoIP(app)
-print()
-print("testing" + os.getenv('GEOIPIFY_API_KEY'))
-print()
+
 prod = 'postgresql:///mapmosphere'
 test = 'postgresql:///testdb'
 testingSession = None
