@@ -15,8 +15,11 @@ CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
 app.config["GEOIPIFY_API_KEY"] = os.getenv('GEOIPIFY_API_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-simple_geoip = SimpleGeoIP(app)
 
+#simple_geoip = SimpleGeoIP(app)
+print()
+print("testing" + os.getenv('GEOIPIFY_API_KEY'))
+print()
 prod = 'postgresql:///mapmosphere'
 test = 'postgresql:///testdb'
 testingSession = None
