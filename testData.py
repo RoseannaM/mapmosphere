@@ -4,7 +4,7 @@ from testMessages import testGeojsonData
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
+prod = 'postgresql:///mapmosphere'
 test = 'postgresql:///testdb'
 
 
@@ -51,10 +51,10 @@ def create_test_data():
 
     addUsers()
     addMessages()
-    addLikedMessage()
+    #addLikedMessage()
 
 
 if __name__ == "__main__":
-    connect_to_db(app, test)
+    connect_to_db(app, prod)
     db.create_all()
     create_test_data()
