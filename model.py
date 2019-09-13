@@ -74,4 +74,4 @@ def connect_to_db(app, db_uri):
 
 if __name__ == "__main__":
     from serve import app
-    connect_to_db(app, test)
+    connect_to_db(app, prod)

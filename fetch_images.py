@@ -2,7 +2,6 @@ import requests
 import os
 
 session_token = os.getenv('SESSION')
-
 baseUrl = 'https://www.instagram.com/'
 topsearch = 'web/search/topsearch/?context=blended&query=/'
 images = 'explore/locations/'

@@ -34,7 +34,7 @@ class MapmosphereTestsDatabase(unittest.TestCase):
         app.config['TESTING'] = True
         
         # Connect to test database (uncomment when testing database)
-        connect_to_db(app, db_uri='postgresql:///testdb')
+        connect_to_db(app, db_uri='postgresql:///mapmosphere')
         db.create_all()
         create_test_data()
     

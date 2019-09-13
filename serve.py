@@ -9,12 +9,23 @@ from model import connect_to_db, db, Message, User, LikedMessage
 from datetime import datetime, timedelta
 import os
 session_token = os.getenv('SESSION')
+geo = os.getenv('GEOIPIFY_API_KEY')
 app = Flask(__name__, static_folder="build/static", template_folder="build")
 CORS(app, supports_credentials=True)
 
-app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
-app.config["GEOIPIFY_API_KEY"] = os.getenv('GEOIPIFY_API_KEY')
+app.config['SECRET_KEY'] = session_token
+app.config["GEOIPIFY_API_KEY"] = geo
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+<<<<<<< HEAD
+=======
+
+print('\n\n\n\n')
+if not os.environ.get('SECRET_KEY'):
+    print("SECRETS NOT SOURCED!")
+else:
+    print("**~  Success ~** SECRETS LOADED")
+print('\n\n\n\n')
+>>>>>>> 8e86f4430143d7d2f7ffefa485cd66a8198bf416
 
 #simple_geoip = SimpleGeoIP(app)
 print()
@@ -56,7 +67,7 @@ def get_message(message_id):
 @app.route("/spirit/api/v1.0/message", methods=["POST"])
 def post_message():
     """post a message to the database"""
-    geoip_data = simple_geoip.get_geoip_data()
+    # geoip_data = simple_geoip.get_geoip_data()
     #lat = geoip_data.get('location').get('lat', None)
     #lng = geoip_data.get('location').get('lng', None)
     # country = geoip_data.get('location').get('country', None)
@@ -213,7 +224,7 @@ if __name__ == "__main__":
     app.jinja_env.auto_reload = app.debug
 
     # connect to main database
-    connect_to_db(app, test)
+    connect_to_db(app, prod)
 
     print("Connected to DB.")
     DebugToolbarExtension(app)
