@@ -10,7 +10,7 @@ Environment="LANGUAGE=en_US.UTF-8:"
 WorkingDirectory=/home/ubuntu/mapmosphere/
 ExecStart=/bin/bash -c "source secrets.sh\
 && source env/bin/activate\
-&& python3 server.py &>> flask.log"
+&& python3 serve.py &>> flask.log"
 Restart=always
 
 [Install]
