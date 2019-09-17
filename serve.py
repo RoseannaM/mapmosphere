@@ -10,7 +10,8 @@ from datetime import datetime, timedelta
 import os
 session_token = os.getenv('SESSION')
 geo = os.getenv('GEOIPIFY_API_KEY')
-app = Flask(__name__, static_folder="build/static", template_folder="build")
+#app = Flask(__name__, static_folder="build/static", template_folder="build")
+app = Flask(__name__, static_folder="static", template_folder="templates")
 CORS(app, supports_credentials=True)
 
 app.config['SECRET_KEY'] = session_token
@@ -215,12 +216,12 @@ def get_location():
 
 
 if __name__ == "__main__":
-    app.debug = True
-    app.jinja_env.auto_reload = app.debug
+    #app.debug = True
+    #app.jinja_env.auto_reload = app.debug
 
     # connect to main database
     connect_to_db(app, prod)
 
     print("Connected to DB.")
-    DebugToolbarExtension(app)
+    #DebugToolbarExtension(app)
     app.run(host='0.0.0.0', port='5000')
