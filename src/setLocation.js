@@ -29,7 +29,7 @@ const setLocation = () => {
   return getLocation()
     .then(pos => {
       console.log(pos);
-      return fetch('http://0.0.0.0:5000/spirit/api/v1.0/set/location', {
+      return fetch('/spirit/api/v1.0/set/location', {
         credentials: 'include',
         method: 'POST',
         body: JSON.stringify(pos),
