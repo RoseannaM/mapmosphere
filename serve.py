@@ -33,6 +33,11 @@ testingSession = None
 
 @app.route("/")
 def home():
+    if session:
+        print(session)
+    else:
+        session['logged_in'] = False
+        print(session)
     return render_template('index.html')
 
 
