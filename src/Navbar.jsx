@@ -23,7 +23,7 @@ class Navbar extends Component {
   }
   handleLogout = e => {
     e.preventDefault();
-    const registerUserUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/logout';
+    const registerUserUrl = '/spirit/api/v1.0/logout';
 
     fetch(registerUserUrl, {
       credentials: 'include',

@@ -21,7 +21,7 @@ import ReactMapboxGl, {
 import Modal from './Modal';
 import MapboxGL from 'mapbox-gl';
 
-const geojsonUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/geojson.json';
+const geojsonUrl = '/spirit/api/v1.0/geojson.json';
 
 const mapStyle = {
   position: 'absolute',

@@ -26,7 +26,7 @@ class Imageview extends Component {
 
   componentDidMount() {
     const imageUrl =
-      'http://0.0.0.0:5000/spirit/api/v1.0/images/' + this.props.city;
+      '/spirit/api/v1.0/images/' + this.props.city;
     fetch(imageUrl, { credentials: 'include' })
       .then(res => res.json())
       .then(myJson => {

@@ -35,7 +35,7 @@ class AllLikes extends Component {
   fetchData = e => {
     const user_id = this.props.session.id;
     if (user_id) {
-      const likeMessagesUrl = `http://0.0.0.0:5000/spirit/api/v1.0/message/${user_id}/like?page=${this.state.page}`;
+      const likeMessagesUrl = `/spirit/api/v1.0/message/${user_id}/like?page=${this.state.page}`;
       fetch(likeMessagesUrl, {
         credentials: 'include'
       })

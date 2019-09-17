@@ -21,7 +21,7 @@ class RegistrationFormView extends Component {
   handleSubmit = e => {
     const args = { email: this.state.email, password: this.state.password };
     e.preventDefault();
-    const registerUserUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/register';
+    const registerUserUrl = '/spirit/api/v1.0/register';
 
     fetch(registerUserUrl, {
       credentials : 'include',

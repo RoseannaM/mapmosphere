@@ -20,7 +20,7 @@ class LoginFormView extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const registerUserUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/login';
+    const registerUserUrl = '/spirit/api/v1.0/login';
   
     fetch(registerUserUrl, {
       credentials : 'include',

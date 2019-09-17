@@ -19,7 +19,7 @@ export default class MessagePopup extends Component {
     const { liked, message_id } = this.props;
     const user_id = this.props.session.id;
     const likeMessageUrl =
-      'http://0.0.0.0:5000/spirit/api/v1.0/messages/' + message_id + '/like';
+      '/spirit/api/v1.0/messages/' + message_id + '/like';
     const args = { liked: liked, message_id: message_id, user_id: user_id };
 
     fetch(likeMessageUrl, {

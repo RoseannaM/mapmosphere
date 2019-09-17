@@ -19,7 +19,7 @@ class MessageFormView extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.state.location.then(({ lat, lng, city, state, country }) => {
-      const postMessageUrl = 'http://0.0.0.0:5000/spirit/api/v1.0/message';
+      const postMessageUrl = '/spirit/api/v1.0/message';
       const messageData = {
         messageText: this.state.messageData,
         lng: lng,
