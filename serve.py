@@ -68,12 +68,6 @@ def get_message(message_id):
 @app.route("/spirit/api/v1.0/message", methods=["POST"])
 def post_message():
     """post a message to the database"""
-    # geoip_data = simple_geoip.get_geoip_data()
-    #lat = geoip_data.get('location').get('lat', None)
-    #lng = geoip_data.get('location').get('lng', None)
-    # country = geoip_data.get('location').get('country', None)
-    # city = geoip_data.get('location').get('city', None)
-
     current_time = datetime.utcnow()
     data = request.get_json()
     lat = data["lat"]
@@ -114,11 +108,6 @@ def get_liked_messages(user_id):
 
     liked_messages = LikedMessage.query.filter_by(
         user_id=user_id).paginate(page, 10, False)
-
-    if liked_messages.has_next:
-        print('yes')
-    else:
-        print("no")
 
     if user_id == session["id"]:
         return jsonify(create_liked_features(liked_messages), liked_messages.has_next), 200
@@ -221,12 +210,5 @@ def get_location():
 
 
 if __name__ == "__main__":
-    #app.debug = True
-    #app.jinja_env.auto_reload = app.debug
-
-    # connect to main database
     connect_to_db(app, prod)
-
-    print("Connected to DB.")
-    #DebugToolbarExtension(app)
     app.run(host='0.0.0.0', port='5000')
