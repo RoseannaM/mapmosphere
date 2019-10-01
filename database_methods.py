@@ -9,8 +9,8 @@ def get_active_messages():
     current_time = datetime.utcnow()
     twenty_four_hours_ago = current_time - timedelta(hours=24)
 
-    messages_within_twentyfour_hours = Message.query.filter(
-        Message.created_at > twenty_four_hours_ago).all()
+    messages_within_twentyfour_hours = set(Message.query.filter(
+        Message.created_at > twenty_four_hours_ago).all())
 
     return messages_within_twentyfour_hours
 
@@ -57,17 +57,26 @@ def create_geoJson(session):
 
     if session["logged_in"] == True:
         user_id = session["id"]
-        # set liked to either true or false for each message
         liked_messages = get_all_liked_messages(user_id)
 
     features = []
+    
     messages = get_active_messages()
 
     for message in messages:
         liked = message in liked_messages if session["logged_in"] else None
-        feature = message_to_feature(message, liked)
 
+        feature = message_to_feature(message, liked)
+        
         features.append(feature)
+
+    #handle liked messages that have timed out 
+
+    for liked in liked_messages:
+        liked_feature = message_to_feature(liked, True)
+        if liked_feature not in features:
+            features.append(liked_feature)
+
 
     geoJson = {"type": "FeatureCollection",
                "features": features
