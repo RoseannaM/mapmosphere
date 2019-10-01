@@ -79,7 +79,7 @@ Tech Stack
 	src="https://docs.python.org/3/_static/py.png">
 </a>
 
-- <a href="https://www.python.org">
+- <a href="https://flask.palletsprojects.com/en/1.1.x/">
 	Flask
 	<img
 	alt="flask logo"
@@ -110,10 +110,11 @@ Tech Stack
 	width="16">
 </a>
 
+<hr>
+
 <h3>MIT LICENCE<h3/>
 <a name="licence"></a>
 
-<p>
 The MIT License (MIT) Copyright (c) 2019 Roseanna McFarlane
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -121,5 +122,4 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-</p>
 
