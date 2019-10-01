@@ -25,7 +25,7 @@
 
 * [Features](#features)
 * [Tech Stack](#tech-stack)
-* [License](#license)
+* [Licence](#licence)
 
 <h3>
 Features
