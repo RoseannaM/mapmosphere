@@ -7,6 +7,7 @@
 <h3 align="center">
 	Explore the World ♡ Share your World
 </h3>
+
 <p align="center">
 	<img
 		alt="MIT Licence"
@@ -37,30 +38,29 @@ Features
 - View images associated by location, pulled from Instagram
 
 <hr>
-<h4>
-🌏 View messages from around the globe 🌏
+
+<h4 align="center">
+🌏View messages from around the globe 🌏 or 💌Send some love 💌
 </h4>
-<p>
-	<img
-		width="350"
+<p align="center">
+	<img 
+		height="350"
+		width="400"
 		alt="screenshot of mapmosphere main page showing world map in 2d"
 		src="https://raw.githubusercontent.com/RoseannaM/mapmosphere/master/static/media/mapmosphere-main-screen.png?">
-</p>
-<h4>
-💌 Send some love 💌
-</h4>
-<p>
-	<img
-		width="350"
+		<img
+		height="350"
+		width="400"
 		alt="screenshot of mapmosphere main page showing world map in 2d"
 		src="https://raw.githubusercontent.com/RoseannaM/mapmosphere/master/static/media/mapmosphere-message-screen.png?">
 </p>
-<h4>
+
+<h4 align="center">
 💖Like your favourite messages 💖 
 </h4>
-<p>
+<p align="center">
 	<img
-		width="350"
+		width="400"
 		alt="screenshot of mapmosphere main page showing world map in 2d"
 		src="https://raw.githubusercontent.com/RoseannaM/mapmosphere/master/static/media/mapmosphere-likes-screen.png?">
 </p>
@@ -112,6 +112,7 @@ Tech Stack
 
 <h3>MIT LICENCE<h3/>
 <a name="licence"></a>
+
 <p>
 The MIT License (MIT) Copyright (c) 2019 Roseanna McFarlane
 
