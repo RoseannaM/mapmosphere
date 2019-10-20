@@ -31,15 +31,6 @@ prod = 'postgresql:///mapmosphere'
 test = 'postgresql:///testdb'
 testingSession = None
 
-@app.route("/")
-def home():
-    if session:
-        print(session)
-    else:
-        session['logged_in'] = False
-        print(session)
-    return render_template('index.html')
-
 
 @app.route("/spirit/api/v1.0/geojson.json", methods=["GET"])
 def geojson():
@@ -208,6 +199,15 @@ def get_location():
 
     return jsonify(dict(session))
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def home(path):
+    if session:
+        print(session)
+    else:
+        session['logged_in'] = False
+        print(session)
+    return render_template('index.html')
 
 if __name__ == "__main__":
     connect_to_db(app, prod)
